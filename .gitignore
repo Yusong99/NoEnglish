@@ -1,0 +1,13 @@
+# React Native
+frontend/node_modules/
+frontend/android/build/
+frontend/ios/build/
+frontend/.expo/
+
+# Spring Boot
+backend/target/
+backend/.idea/
+backend/*.iml
+
+# Mac
+.DS_Store
