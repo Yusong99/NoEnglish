@@ -1,5 +1,5 @@
 import urlcat from "urlcat";
-const request = async (url, {method = 'GET', params, body} ={}) => {
+export const request = async (url, {method = 'GET', params, body} ={}) => {
     //完整的接口地址
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
     const requestUrl = urlcat(apiUrl, url, params)
