@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
+import {View, TextInput, Button, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { login, register } from '../utils/authService';
 
 export default function AuthScreen() {
@@ -41,10 +41,35 @@ export default function AuthScreen() {
                 secureTextEntry
                 style={{ borderWidth: 1, marginBottom: 10, padding: 5 }}
             />
-            <Button title="注册" onPress={handleRegister} />
-            <View style={{ height: 10 }} />
-            <Button title="登录" onPress={handleLogin} />
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.btn} onPress={handleLogin}>
+                    <Text style={styles.label}>登录</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} onPress={handleRegister}>
+                    <Text style={styles.label}>注册</Text>
+                </TouchableOpacity>
+            </View>
+            <Text style={{ marginTop: 20 }}>忘记密码？</Text>
             <Text style={{ marginTop: 20 }}>{message}</Text>
         </View>
     );
 }
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        justifyContent: "center",  // 按钮组居中
+        alignItems: "center",
+        gap: 20,
+    },
+    label: {
+        color: 'black',
+        lineHeight: 40
+    },
+    btn: {
+        width: 120,                 // 给定相同宽度 → 对称
+        paddingVertical: 10,
+        backgroundColor: "#ddd",
+        alignItems: "center",
+        borderRadius: 8,
+    },
+})
