@@ -14,9 +14,10 @@ export const register = async (username, password) => {
 export const login = async (username, password) => {
     try {
         const res = await api.post('/auth/login', { username, password });
-        const token = res.data.token; // 假设后端返回 { token: '...' }
-        await AsyncStorage.setItem('token', token); // 保存到本地
-        return token;
+        console.log(res);
+        // const token = res.data.token; // 假设后端返回 { token: '...' }
+        // await AsyncStorage.setItem('token', token); // 保存到本地
+        // return token;
     } catch (error) {
         throw error.response?.data || { message: '登录失败' };
     }
