@@ -2,6 +2,7 @@ package org.noenglish.backend.service;
 
 import org.noenglish.backend.entity.LoginResponse;
 import org.noenglish.backend.entity.User;
+import org.noenglish.backend.exception.BusinessException;
 import org.noenglish.backend.repository.UserRepository;
 import org.noenglish.backend.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,22 @@ public class AuthService {
     public LoginResponse login(String username, String password) {
         User user = userRepository.findByUsername(username);
 
-        if (user == null) {
-            throw new RuntimeException("User not found");
+        // 用户不存在或密码错误，统一提示
+        if (user == null || !encoder.matches(password, user.getPassword())) {
+            throw new BusinessException(1001, "用户名或密码错误");
         }
+        // 检查账号状态
+//        if (!user.isEnabled()) {
+//            throw new BusinessException(ResponseCode.ACCOUNT_DISABLED);
+//        }
 
-        if (!encoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Password incorrect");
-        }
+//        if (user == null) {
+//            throw new RuntimeException("User not found");
+//        }
+
+//        if (!encoder.matches(password, user.getPassword())) {
+//            throw new RuntimeException("Password incorrect");
+//        }
 
         // 成功 → 生成 JWT
         String token = JwtUtil.generateToken(user.getUsername());
