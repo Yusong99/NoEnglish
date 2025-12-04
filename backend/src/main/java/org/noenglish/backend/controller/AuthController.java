@@ -1,16 +1,14 @@
 package org.noenglish.backend.controller;
 
-import org.noenglish.backend.dto.LoginRequest;
+import org.noenglish.backend.dto.response.ApiResponse;
+import org.noenglish.backend.entity.LoginResponse;
 import org.noenglish.backend.entity.User;
-import org.noenglish.backend.repository.UserRepository;
 import org.noenglish.backend.security.JwtUtil;
 import org.noenglish.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,9 +25,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        String token = authService.login(user.getUsername(), user.getPassword());
-        return ResponseEntity.ok(token);
+    public ApiResponse<?> login(@RequestBody User user) {
+//        String token = authService.login(user.getUsername(), user.getPassword());
+        LoginResponse loginData = authService.login(user.getUsername(), user.getPassword());
+        return ApiResponse.success(loginData);
     }
 
     // 测试受保护接口

@@ -1,4 +1,4 @@
-package org.noenglish.backend.dto;
+package org.noenglish.backend.dto.request;
 
 import lombok.Data;
 
@@ -6,4 +6,5 @@ import lombok.Data;
 public class LoginRequest {
     private String username;
     private String password;
+
 }

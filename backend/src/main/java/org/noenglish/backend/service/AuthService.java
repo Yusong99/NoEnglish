@@ -1,5 +1,6 @@
 package org.noenglish.backend.service;
 
+import org.noenglish.backend.entity.LoginResponse;
 import org.noenglish.backend.entity.User;
 import org.noenglish.backend.repository.UserRepository;
 import org.noenglish.backend.security.JwtUtil;
@@ -29,7 +30,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public String login(String username, String password) {
+    public LoginResponse login(String username, String password) {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -41,6 +42,12 @@ public class AuthService {
         }
 
         // 成功 → 生成 JWT
-        return JwtUtil.generateToken(user.getUsername());
+        String token = JwtUtil.generateToken(user.getUsername());
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(token);
+        loginResponse.setExpiresIn((long) (3600*24));
+
+        return loginResponse;
     }
 }
