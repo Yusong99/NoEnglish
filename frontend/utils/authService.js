@@ -7,6 +7,15 @@ import {router} from "expo-router";
 export const register = async (username, password) => {
     try {
         const res = await api.post('/auth/register', { username, password });
+        if (res.data?.code === 1006) {
+            Toast.show({
+                type: 'error',
+                text1: '用户名已存在',
+                autoHide: true,
+                visibilityTime: 2000
+            })
+            return null
+        }
         Toast.show({
             type: 'success',
             text1: "注册成功",
