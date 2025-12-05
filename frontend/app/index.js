@@ -3,28 +3,31 @@ import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View}
 import {useState} from 'react';
 import {request} from '../utils/request'
 import AuthScreen from '../components/login_register';
+import Toast from "react-native-toast-message";
 
 export default function App() {
     const [userName, setUserName] = useState(1);
     const [userPwd, setUserPwd] = useState(1);
     return (
-        <ScrollView>
-            {/*<View style={styles.container}>*/}
-            {/*    <TextInput style={styles.input} placeholder={"请输入用户名"} onChangeText={text => setUserName(text)}*/}
-            {/*               defaultValue={userName}>*/}
-            {/*    </TextInput>*/}
-            {/*    <TextInput style={styles.input} placeholder={"请输入密码"} onChangeText={text => setUserPwd(text)}*/}
-            {/*               defaultValue={userPwd}>*/}
-            {/*    </TextInput>*/}
-            {/*    <TouchableOpacity style={styles.reload} onPress={request()}>*/}
-            {/*        <Text style={styles.label}>登录</Text>*/}
-            {/*    </TouchableOpacity>*/}
-            {/*    <TouchableOpacity style={styles.reload}>*/}
-            {/*        <Text style={styles.label}>注册</Text>*/}
-            {/*    </TouchableOpacity>*/}
-            {/*</View>*/}
-            <AuthScreen></AuthScreen>
-        </ScrollView>
+        <>
+            <ScrollView>
+                {/*<View style={styles.container}>*/}
+                {/*    <TextInput style={styles.input} placeholder={"请输入用户名"} onChangeText={text => setUserName(text)}*/}
+                {/*               defaultValue={userName}>*/}
+                {/*    </TextInput>*/}
+                {/*    <TextInput style={styles.input} placeholder={"请输入密码"} onChangeText={text => setUserPwd(text)}*/}
+                {/*               defaultValue={userPwd}>*/}
+                {/*    </TextInput>*/}
+                {/*    <TouchableOpacity style={styles.reload} onPress={request()}>*/}
+                {/*        <Text style={styles.label}>登录</Text>*/}
+                {/*    </TouchableOpacity>*/}
+                {/*    <TouchableOpacity style={styles.reload}>*/}
+                {/*        <Text style={styles.label}>注册</Text>*/}
+                {/*    </TouchableOpacity>*/}
+                {/*</View>*/}
+                <AuthScreen></AuthScreen>
+            </ScrollView>
+        </>
     )
         ;
 }

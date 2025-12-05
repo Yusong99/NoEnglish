@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {View, TextInput, Button, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { login, register } from '../utils/authService';
 import {useRouter} from "expo-router";
+import Toast from "react-native-toast-message";
 
 export default function AuthScreen({ navigation }) {
     const [username, setUsername] = useState('');
@@ -20,9 +21,7 @@ export default function AuthScreen({ navigation }) {
     const handleLogin = async () => {
         try {
             const token = await login(username, password);
-            setMessage('登录成功！Token 已保存');
-            console.log('JWT Token:', token);
-            router.navigate('/HomeScreen'); // replace 防止返回登录页
+            setMessage('登录成功！');
         } catch (err) {
             setMessage(err.message);
         }
