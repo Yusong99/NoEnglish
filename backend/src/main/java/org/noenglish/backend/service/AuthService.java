@@ -21,7 +21,7 @@ public class AuthService {
     public User register(User user) {
         // 检查用户名是否存在
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new BusinessException(1006, "用户名已存在");
         }
 
         // 加密密码

@@ -12,7 +12,7 @@ public enum ResponseCode {
     TOKEN_INVALID(1003, "无效的登录凭证"),
     ACCOUNT_DISABLED(1004, "账号已被禁用"),
     ACCOUNT_LOCKED(1005, "账号已被锁定"),
-
+    ACCOUNT_EXIST(1006, "用户名已存在"),
     // 业务相关 2000-2999
     PARAM_ERROR(2001, "参数错误"),
     DATA_NOT_FOUND(2002, "数据不存在"),
