@@ -34,7 +34,6 @@ export const login = async (username, password) => {
         console.log(res)
         if (res.data?.code === 200) {
             const token = res.data.data.token; // 假设后端返回 { token: '...' }
-            console.log(token)
             await AsyncStorage.setItem('token', token); // 保存到本地
             Toast.show({
                 type: 'success',
@@ -42,7 +41,7 @@ export const login = async (username, password) => {
                 autoHide: true,
                 visibilityTime: 1000,
             })
-            router.navigate('/HomeScreen'); // replace 防止返回登录页
+            router.navigate('/pages/HomeScreen'); //登陆成功后跳转的界面
             return token;
         }else if (res.data?.code === 1001) {
             Toast.show({
