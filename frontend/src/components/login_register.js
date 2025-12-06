@@ -12,18 +12,28 @@ export default function AuthScreen({ navigation }) {
     const handleRegister = async () => {
         try {
             const res = await register(username, password);
-            setMessage(res.message);
         } catch (err) {
-            setMessage(err.message);
+            Toast.show({
+                type: 'error',
+                text1: err.message,
+                autoHide: true,
+                visibilityTime: 2000
+            })
+            return null
         }
     };
 
     const handleLogin = async () => {
         try {
-            const token = await login(username, password);
-            setMessage('登录成功！');
+            await login(username, password);
         } catch (err) {
-            setMessage(err.message);
+            Toast.show({
+                type: 'error',
+                text1: err.message,
+                autoHide: true,
+                visibilityTime: 2000
+            })
+            return null
         }
     };
 
