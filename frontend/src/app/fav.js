@@ -1,6 +1,7 @@
 import {View, Text, ScrollView, StyleSheet} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {SafeAreaView} from "react-native-safe-area-context";
+import {router} from "expo-router";
 
 export default function FavScreen() {
     return (
@@ -20,3 +21,4 @@ const styles = StyleSheet.create({
         fontSize: 200,
     }
 })
+

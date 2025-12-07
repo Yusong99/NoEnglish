@@ -1,9 +1,5 @@
-import {StatusBar} from 'expo-status-bar';
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from 'react';
-import {request} from '../utils/request'
-import AuthScreen from '../components/login_register';
-import Toast from "react-native-toast-message";
 
 export default function App() {
     const [userName, setUserName] = useState(1);

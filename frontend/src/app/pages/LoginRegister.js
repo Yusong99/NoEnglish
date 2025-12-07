@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {View, TextInput, Button, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import { login, register } from '../utils/authService';
+import { login, register } from '../../utils/authService';
 import {useRouter} from "expo-router";
 import Toast from "react-native-toast-message";
 
-export default function AuthScreen({ navigation }) {
+export default function LoginRegister({ navigation }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
