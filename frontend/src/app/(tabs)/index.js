@@ -1,19 +1,17 @@
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
 
 export default function App() {
-    const [userName, setUserName] = useState(1);
-    const [userPwd, setUserPwd] = useState(1);
     return (
         <>
-            <ScrollView>
-            </ScrollView>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>欢迎来到首页！</Text>
+            </View>
         </>
     )
         ;
 }
-
-const styles = StyleSheet.create({
+StyleSheet.create({
     container: {
         marginTop: 200,
         flex: 0.5,

@@ -1,31 +1,16 @@
-import React, { useState } from 'react';
-import {View, TextInput, Button, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import { login, register } from '../../utils/authService';
-import {useRouter} from "expo-router";
+import React, {useState} from "react";
+import {register} from "../../utils/authService";
 import Toast from "react-native-toast-message";
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
 
-export default function LoginRegister({ navigation }) {
+export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    const router = useRouter();
+    const [message] = useState('');
     const handleRegister = async () => {
         try {
-            const res = await register(username, password);
-        } catch (err) {
-            Toast.show({
-                type: 'error',
-                text1: err.message,
-                autoHide: true,
-                visibilityTime: 2000
-            })
-            return null
-        }
-    };
-
-    const handleLogin = async () => {
-        try {
-            await login(username, password);
+            await register(username, password);
         } catch (err) {
             Toast.show({
                 type: 'error',
@@ -38,7 +23,7 @@ export default function LoginRegister({ navigation }) {
     };
 
     return (
-        <View style={{ padding: 20 }}>
+        <SafeAreaView style={{ padding: 20 }}>
             <TextInput
                 placeholder="用户名"
                 value={username}
@@ -53,16 +38,12 @@ export default function LoginRegister({ navigation }) {
                 style={{ borderWidth: 1, marginBottom: 10, padding: 5 }}
             />
             <View style={styles.container}>
-                <TouchableOpacity style={styles.btn} onPress={handleLogin}>
-                    <Text style={styles.label}>登录</Text>
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.btn} onPress={handleRegister}>
                     <Text style={styles.label}>注册</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={{ marginTop: 20 }}>忘记密码？</Text>
             <Text style={{ marginTop: 20 }}>{message}</Text>
-        </View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
