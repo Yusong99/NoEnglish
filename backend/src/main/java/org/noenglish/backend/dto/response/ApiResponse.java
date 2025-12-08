@@ -3,6 +3,8 @@ package org.noenglish.backend.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
+
 // 1. 通用响应类
 public class ApiResponse<T> {
     @Getter
@@ -44,6 +46,13 @@ public class ApiResponse<T> {
         ApiResponse<T> response = new ApiResponse<>();
         response.setCode(code);
         response.setMessage(message);
+        return response;
+    }
+
+    // 失败响应
+    public static <T> ApiResponse<T> error(IOException e) {
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setMessage(e.getMessage());
         return response;
     }
 }

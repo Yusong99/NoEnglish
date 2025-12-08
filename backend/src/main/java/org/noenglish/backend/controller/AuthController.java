@@ -59,15 +59,15 @@ public class AuthController {
         }
 
         String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        String savePath = "avatar/" + filename;
+        String savePath = "/Users/xuyusong/IdeaProjects/avatars/" + filename;
 
         try {
             file.transferTo(new File(savePath));
         } catch (IOException e) {
-            return ApiResponse.error(2003, "保存失败");
+            return ApiResponse.error(e);
         }
 
-        String url = "http://@localhost/avatar/" + filename;
+        String url = "http://localhost/avatar/" + filename;
         userService.updateAvatar(userId, url);
 
         return ApiResponse.success(url);
