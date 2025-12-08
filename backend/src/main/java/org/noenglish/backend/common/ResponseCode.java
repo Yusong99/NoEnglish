@@ -16,6 +16,7 @@ public enum ResponseCode {
     // 业务相关 2000-2999
     PARAM_ERROR(2001, "参数错误"),
     DATA_NOT_FOUND(2002, "数据不存在"),
+    IMAGE_ERROR(2003, "上传头像错误"),
 
     // 系统相关 5000-5999
     SYSTEM_ERROR(5000, "系统错误");
