@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
     User findByUsername(String username);
+
     boolean existsByUsername(String username);
+
     @Modifying
     @Transactional
-    @Query("update User u set u.avatar = :avatar where u.id = :userId")
-    void updateAvatar(@Param("userId") Long userId, @Param("avatar") String avatar);
+    @Query("update User u set u.avatarUrl = :avatarUrl where u.id = :userId")
+    void updateAvatar(@Param("userId") Long userId, @Param("avatarUrl") String avatarUrl);
 }

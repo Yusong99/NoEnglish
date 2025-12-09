@@ -1,6 +1,6 @@
 package org.noenglish.backend.exception;
 
-import org.noenglish.backend.dto.response.ApiResponse;
+import org.noenglish.backend.common.ApiResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

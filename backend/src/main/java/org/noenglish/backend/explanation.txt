@@ -1,0 +1,39 @@
+NoEnglishProject/
+│
+├─ backend/
+│  ├─ src/main/java/org/noenglish/backend/
+│  │  ├─ NoEnglishApplication.java           # Spring Boot 启动类
+│  │  │
+│  │  ├─ common/
+│  │  │  ├─ ResponseCode.java               # 枚举状态码
+│  │  │  ├─ ApiResponse.java                # 统一返回对象
+│  │  │
+│  │  ├─ controller/
+│  │  │  ├─ AuthController.java             # 登录、注册、头像上传接口
+│  │  │  ├─ UserController.java             # 用户相关接口
+│  │  │
+│  │  ├─ dto/
+│  │  │  ├─ LoginResponse.java              # 登录成功返回对象
+│  │  │
+│  │  ├─ entity/
+│  │  │  ├─ User.java                        # 用户实体类
+│  │  │
+│  │  ├─ mapper/
+│  │  │  ├─ UserMapper.java                  # MyBatis Mapper
+│  │  │
+│  │  ├─ repository/
+│  │  │  ├─ UserRepository.java             # JpaRepository 或自定义 Repository
+│  │  │
+│  │  ├─ security/
+│  │  │  ├─ JwtUtil.java                     # JWT 工具类
+│  │  │
+│  │  ├─ service/
+│  │  │  ├─ AuthService.java                # 登录注册业务逻辑
+│  │  │  ├─ UserService.java                # 用户业务逻辑（更新头像等）
+│  │  │
+│  │  └─ exception/
+│  │     └─ GlobalExceptionHandler.java     # 全局异常处理
+│  │
+│  └─ resources/
+│     ├─ application.properties             # 配置文件（数据库、JWT secret 等）
+│     ├─ mapper/UserMapper.xml               # MyBatis Mapper XML

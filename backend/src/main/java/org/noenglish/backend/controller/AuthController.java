@@ -1,7 +1,7 @@
 package org.noenglish.backend.controller;
 
-import org.noenglish.backend.dto.response.ApiResponse;
-import org.noenglish.backend.entity.LoginResponse;
+import org.noenglish.backend.common.ApiResponse;
+import org.noenglish.backend.dto.LoginResponse;
 import org.noenglish.backend.entity.User;
 import org.noenglish.backend.security.JwtUtil;
 import org.noenglish.backend.service.AuthService;
@@ -11,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,16 +23,16 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-
+    // 注册接口
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ApiResponse<?> register(@RequestBody User user) {
         User savedUser = authService.register(user);
-        return ResponseEntity.ok("User registered: " + savedUser.getUsername());
+        return ApiResponse.success(savedUser);
     }
 
+    // 登录接口
     @PostMapping("/login")
-    public ApiResponse<?> login(@RequestBody User user) {
-//        String token = authService.login(user.getUsername(), user.getPassword());
+    public ApiResponse<LoginResponse> login(@RequestBody User user) {
         LoginResponse loginData = authService.login(user.getUsername(), user.getPassword());
         return ApiResponse.success(loginData);
     }
@@ -43,33 +40,22 @@ public class AuthController {
     // 测试受保护接口
     @GetMapping("/hello")
     public ResponseEntity<?> hello(@RequestHeader("Authorization") String token) {
-        if(!JwtUtil.validateToken(token.replace("Bearer ", ""))){
+        String actualToken = token.replace("Bearer ", "");
+        if (!JwtUtil.validateToken(actualToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
-        String username = JwtUtil.getUsernameFromToken(token.replace("Bearer ", ""));
+        String username = JwtUtil.getUsernameFromToken(actualToken);
         return ResponseEntity.ok("Hello " + username);
     }
 
     @PostMapping("/user/avatar")
-    public ApiResponse uploadAvatar(@RequestParam("file") MultipartFile file,
-                               @RequestParam("userId") Long userId) {
-
-        if (file.isEmpty()) {
-            return ApiResponse.error(2003, "文件为空");
-        }
-
-        String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        String savePath = "/Users/xuyusong/IdeaProjects/avatars/" + filename;
-
+    public ApiResponse<String> uploadAvatar(@RequestParam("file") MultipartFile file,
+                                            @RequestParam("userId") Long userId) {
         try {
-            file.transferTo(new File(savePath));
-        } catch (IOException e) {
-            return ApiResponse.error(e);
+            String url = userService.updateAvatar(userId, file); // 直接传 file
+            return ApiResponse.success(url);
+        } catch (Exception e) {
+            return ApiResponse.error(5000, "上传失败：" + e.getMessage());
         }
-
-        String url = "http://localhost/avatar/" + filename;
-        userService.updateAvatar(userId, url);
-
-        return ApiResponse.success(url);
     }
 }
