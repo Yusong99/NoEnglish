@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         if (file.isEmpty()) throw new IOException("文件为空");
 
         // 保存到项目根目录 avatar 文件夹
-        File dir = new File("avatar");
+        File dir = new File("/Users/xuyusong/IdeaProjects/avatars");
         if (!dir.exists()) dir.mkdirs();
 
         String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
