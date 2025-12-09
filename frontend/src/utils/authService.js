@@ -34,7 +34,10 @@ export const login = async (username, password) => {
         console.log(res)
         if (res.data?.code === 200) {
             const token = res.data.data.token; // 假设后端返回 { token: '...' }
+            const userId = res.data.data.id;
+            console.log(userId);
             await AsyncStorage.setItem('token', token); // 保存到本地
+            await AsyncStorage.setItem('userId', userId);
             Toast.show({
                 type: 'success',
                 text1: "登录成功",
