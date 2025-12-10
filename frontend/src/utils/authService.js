@@ -31,13 +31,13 @@ export const register = async (username, password) => {
 export const login = async (username, password) => {
     try {
         const res = await api.post('/auth/login', { username, password });
-        console.log(res)
         if (res.data?.code === 200) {
             const token = res.data.data.token; // 假设后端返回 { token: '...' }
             const userId = res.data.data.id;
-            console.log(userId);
-            await AsyncStorage.setItem('token', token); // 保存到本地
-            await AsyncStorage.setItem('userId', userId);
+            const avatar = res.data.data.avatarUrl;
+            await AsyncStorage.setItem('token', token + ''); // 保存到本地
+            await AsyncStorage.setItem('userId', userId + '');
+            await AsyncStorage.setItem('avatar', avatar + '');
             Toast.show({
                 type: 'success',
                 text1: "登录成功",

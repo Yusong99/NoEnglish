@@ -1,13 +1,21 @@
 import {View, StyleSheet, Button, TouchableOpacity, Image} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {router} from "expo-router";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen() {
     const defaultAvatar = "../../assets/icon.png";
-    const [avatar, setAvatar] = useState(defaultAvatar);
+    const [avatar, setAvatar] = useState('');
+    useEffect( () => {
+        async function fetchData(){
+            const savedAvatar = await AsyncStorage.getItem("avatar");
+            setAvatar(savedAvatar);
+        }
+        fetchData().then(r => null)
+    },[])
     const userId = 1; // 登录后从缓存/全局变量读取
     const pickImage = async () => {
         // 请求权限
@@ -48,8 +56,6 @@ export default function ProfileScreen() {
                     },
                 }
             );
-
-            console.log('upload result:', res.data);
             setAvatar(res.data.data); // 更新头像
         } catch (err) {
             console.log("上传失败:", err);
@@ -61,7 +67,8 @@ export default function ProfileScreen() {
             <View>
                 <View style={styles.container}>
                     <TouchableOpacity onPress={pickImage}>
-                        <Image source={{ uri: avatar }} style={styles.avatar} />
+                        <Image source={ avatar ? { uri: avatar.replace("localhost", "192.168.124.4") } : require('../../assets/icon.png') }
+                               style={styles.avatar}/>
                     </TouchableOpacity>
                 </View>
                 <Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>
