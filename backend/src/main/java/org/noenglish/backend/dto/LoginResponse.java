@@ -13,4 +13,5 @@ public class LoginResponse {
     private String username;  // 用户名
     private String token;     // JWT
     private String tokenType = "Bearer"; // 默认类型
+    private String avatarUrl;
 }

@@ -1,5 +1,6 @@
 package org.noenglish.backend.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.noenglish.backend.entity.User;
 import org.noenglish.backend.repository.UserRepository;
 import org.noenglish.backend.service.UserService;
@@ -9,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -34,6 +37,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateAvatar(Long userId, MultipartFile file) throws IOException {
         if (file.isEmpty()) throw new IOException("文件为空");
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
+
+        // 删除旧头像
+        String oldAvatar = user.getAvatarUrl();
+        if (oldAvatar != null && !oldAvatar.isEmpty()) {
+            File oldFile = new File("/Users/xuyusong/IdeaProjects/avatars/" + Paths.get(oldAvatar).getFileName());
+            if (oldFile.exists()) {
+                oldFile.delete();
+            }
+        }
 
         // 保存到项目根目录 avatar 文件夹
         File dir = new File("/Users/xuyusong/IdeaProjects/avatars");

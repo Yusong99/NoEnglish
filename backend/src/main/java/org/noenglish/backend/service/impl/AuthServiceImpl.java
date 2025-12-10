@@ -57,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
         loginResponse.setToken(token);
         loginResponse.setTokenType("Bearer");
         loginResponse.setUserId(user.getId());
+        loginResponse.setAvatarUrl(user.getAvatarUrl());
 
         return loginResponse;
     }
