@@ -54,6 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 构建登录响应
         LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setUsername(user.getUsername());
         loginResponse.setToken(token);
         loginResponse.setTokenType("Bearer");
         loginResponse.setUserId(user.getId());
