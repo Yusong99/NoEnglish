@@ -35,6 +35,8 @@ export const login = async (username, password) => {
             const token = res.data.data.token; // 假设后端返回 { token: '...' }
             const userId = res.data.data.id;
             const avatar = res.data.data.avatarUrl;
+            const userName = res.data.data.username;
+            await AsyncStorage.setItem('userName', userName + '');
             await AsyncStorage.setItem('token', token + ''); // 保存到本地
             await AsyncStorage.setItem('userId', userId + '');
             await AsyncStorage.setItem('avatar', avatar + '');

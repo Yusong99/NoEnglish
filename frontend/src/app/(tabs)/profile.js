@@ -1,4 +1,4 @@
-import {View, StyleSheet, Button, TouchableOpacity, Image} from "react-native";
+import {View, StyleSheet, Button, TouchableOpacity, Image, Text} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {router} from "expo-router";
 import {useState, useEffect} from "react";
@@ -74,6 +74,7 @@ export default function ProfileScreen() {
                     </TouchableOpacity>
                 </View>
                 <Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>
+                <Text>{AsyncStorage.getItem('userName')}</Text>
             </View>
         </SafeAreaView>
     );
