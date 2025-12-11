@@ -12,6 +12,7 @@ export default function ProfileScreen() {
     useEffect( () => {
         async function fetchData(){
             const savedAvatar = await AsyncStorage.getItem("avatar");
+            console.log(savedAvatar)
             setAvatar(savedAvatar);
         }
         fetchData().then(r => null)
@@ -57,6 +58,7 @@ export default function ProfileScreen() {
                 }
             );
             setAvatar(res.data.data); // 更新头像
+            await AsyncStorage.setItem("avatar", res.data.data);
         } catch (err) {
             console.log("上传失败:", err);
         }

@@ -1,11 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
+    async function logStorage() {
+        const keys = await AsyncStorage.getAllKeys();
+        const items = await AsyncStorage.multiGet(keys);
+        console.log("AsyncStorage 数据：", items);
+    }
+
     return (
         <>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text>欢迎来到首页！</Text>
+                <Button title="查看缓存" onPress={logStorage} />
             </View>
         </>
     )
