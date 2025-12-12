@@ -74,7 +74,7 @@ export default function ProfileScreen() {
                     </TouchableOpacity>
                 </View>
                 <Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>
-                <Text>{AsyncStorage.getItem('userName')}</Text>
+                <Text style={styles.name}>{AsyncStorage.getItem('userName')}</Text>
             </View>
         </SafeAreaView>
     );
@@ -87,4 +87,8 @@ const styles = StyleSheet.create({
         borderRadius: 60,
         backgroundColor: "#ddd",
     },
+    name: {
+        fontSize: 20,
+        textAlign: "center",
+    }
 })
