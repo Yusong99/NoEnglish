@@ -4,12 +4,20 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
 
     private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION = 1000 * 60 * 60 * 24; // 秘钥有效期 24hour
+    // ⚠️至少 32 位
+    private static final String SECRET =
+            "noenglish_noenglish_noenglish_noenglish";
+
+    private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24; // 24h
+
+    private static final Key KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public static String generateToken(String username) {
         return Jwts.builder()
@@ -34,5 +42,19 @@ public class JwtUtil {
         } catch (JwtException e) {
             return false;
         }
+    }
+
+    /** 解析 token */
+    public static Claims parseToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    /** 是否过期 */
+    public static boolean isExpired(Claims claims) {
+        return claims.getExpiration().before(new Date());
     }
 }
