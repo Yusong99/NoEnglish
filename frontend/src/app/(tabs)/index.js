@@ -6,26 +6,43 @@ import {SafeAreaView} from "react-native-safe-area-context";
 export default function App() {
     const [keyword, setKeyword] = useState('');
     const [list, setList] = useState([]);
+    const [page, setPage] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
 
 
-    const search = async () => {
-        if (!keyword.trim()) return;
+    const onSearch = () => {
+        setList([]);
+        setPage(0);
+        setHasMore(true);
+        search(true);
+    };
+
+
+    const search = async (reset = false) => {
+        if (loading) return;
+
+        const nextPage = reset ? 0 : page;
 
         setLoading(true);
         try {
             const res = await fetch(
-                `http://192.168.124.4:8080/api/words/search?q=${encodeURIComponent(keyword)}`
+                `http://192.168.124.4:8080/api/words/search` +
+                `?q=${encodeURIComponent(keyword)}` +
+                `&page=${nextPage}&size=10`
             );
+
             const data = await res.json();
-            setList(data);
-        } catch (e) {
-            console.error(e);
+
+            setList(prev =>
+                reset ? data.list : [...prev, ...data.list]
+            );
+            setPage(nextPage + 1);
+            setHasMore(data.hasMore);
         } finally {
             setLoading(false);
         }
     };
-
 
     async function logStorage() {
         const keys = await AsyncStorage.getAllKeys();
@@ -33,6 +50,25 @@ export default function App() {
         console.log("AsyncStorage 数据：", items);
     }
 
+    const renderItem = ({ item }) => {
+        return (
+            <View style={{ padding: 12, borderBottomWidth: 1, borderColor: '#eee' }}>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>
+                    {item.word}
+                </Text>
+
+                {item.reading && (
+                    <Text style={{ color: '#666' }}>
+                        {item.reading}
+                    </Text>
+                )}
+
+                <Text style={{ marginTop: 4 }}>
+                    {item.meaning}
+                </Text>
+            </View>
+        );
+    };
     return (
         <SafeAreaView>
             <View style={styles.container}>
@@ -45,7 +81,7 @@ export default function App() {
                         style={styles.input}
                         onSubmitEditing={search}
                     />
-                    <TouchableOpacity onPress={search} style={styles.button}>
+                    <TouchableOpacity onPress={onSearch} style={styles.button}>
                         <Text style={styles.buttonText}>搜索</Text>
                     </TouchableOpacity>
                 </View>
@@ -56,15 +92,18 @@ export default function App() {
                 <FlatList
                     data={list}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.item}>
-                            <Text style={styles.word}>{item.word}</Text>
-                            <Text style={styles.reading}>{item.reading}</Text>
-                            <Text style={styles.meaning}>{item.meaning}</Text>
-                            <Text style={styles.pos}>{item.pos}</Text>
-                        </View>
-                    )}
+                    renderItem={renderItem}
+                    onEndReached={() => {
+                        if (hasMore && !loading) {
+                            search();
+                        }
+                    }}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={
+                        loading ? <Text style={{ textAlign: 'center' }}>加载中...</Text> : null
+                    }
                 />
+
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center' }}>
                 <Text>欢迎来到首页！</Text>
