@@ -2,6 +2,7 @@ import {Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View} f
 import React, {useState} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SafeAreaView} from "react-native-safe-area-context";
+import api from "../../utils/api";
 
 export default function App() {
     const [keyword, setKeyword] = useState('');
@@ -26,13 +27,19 @@ export default function App() {
 
         setLoading(true);
         try {
-            const res = await fetch(
-                `http://192.168.124.4:8080/api/words/search` +
-                `?q=${encodeURIComponent(keyword)}` +
-                `&page=${nextPage}&size=10`
-            );
+            const res = await api.get(
+                'http://192.168.124.4:8080/api/words/search',
+                {
+                    params: {
+                        q: keyword,
+                        page: nextPage,
+                        size: 10,
+                    }
+                }
+            )
 
-            const data = await res.json();
+            const data = await res.data;
+            console.log(data)
 
             setList(prev =>
                 reset ? data.list : [...prev, ...data.list]
