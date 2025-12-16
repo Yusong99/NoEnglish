@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.noenglish.backend.entity.Word;
 import org.noenglish.backend.repository.WordRepository;
 import org.noenglish.backend.service.WordService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,19 +14,15 @@ import java.util.List;
 @Slf4j
 @Service
 public class WordServiceImpl implements WordService {
-    private WordRepository wordRepository;
+    private final WordRepository wordRepository;
 
-    @Autowired
-    public void WordService(WordRepository wordRepository) {
+    public WordServiceImpl(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
     }
 
-    public List<Word> search(String keyword) {
-        log.info("Searching for {}", keyword);
-        if (keyword == null || keyword.isBlank()) {
-            log.info("Keyword is null or blank");
-            return List.of();
-        }
-        return wordRepository.search(keyword.trim());
+    @Override
+    public Page<Word> search(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return wordRepository.search(keyword, pageable);
     }
 }

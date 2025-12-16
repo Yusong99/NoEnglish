@@ -1,6 +1,8 @@
 package org.noenglish.backend.repository;
 
 import org.noenglish.backend.entity.Word;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,9 +12,13 @@ import java.util.List;
 public interface WordRepository extends JpaRepository<Word, Long> {
 
     @Query("""
-        SELECT w FROM Word w
-        WHERE w.word LIKE %:q%
-           OR w.reading LIKE %:q%
+        select w from Word w
+        where w.word like %:q%
+           or w.reading like %:q%
+           or w.meaning like %:q%
     """)
-    List<Word> search(@Param("q") String q);
+    Page<Word> search(
+            @Param("q") String q,
+            Pageable pageable
+    );
 }
