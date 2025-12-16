@@ -1,5 +1,5 @@
 import {Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SafeAreaView} from "react-native-safe-area-context";
 import api from "../../utils/api";
@@ -11,6 +11,15 @@ export default function App() {
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (keyword) {
+                search(true);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [keyword]);
 
     const onSearch = () => {
         setList([]);
