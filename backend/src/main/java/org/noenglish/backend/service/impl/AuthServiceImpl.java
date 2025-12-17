@@ -6,7 +6,7 @@ import org.noenglish.backend.entity.User;
 import org.noenglish.backend.exception.BusinessException;
 import org.noenglish.backend.repository.UserRepository;
 import org.noenglish.backend.service.AuthService;
-import org.noenglish.backend.util.JwtUtil;
+import org.noenglish.backend.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,12 +45,6 @@ public class AuthServiceImpl implements AuthService {
         }
         // 成功 → 生成 JWT
         String token = JwtUtil.generateToken(user.getUsername(), user.getId());
-
-        // 构建用户信息
-        User userInfo = new User();
-        userInfo.setId(user.getId());
-        userInfo.setUsername(user.getUsername());
-        userInfo.setAvatarUrl(user.getAvatarUrl());
 
         // 构建登录响应
         LoginResponse loginResponse = new LoginResponse();

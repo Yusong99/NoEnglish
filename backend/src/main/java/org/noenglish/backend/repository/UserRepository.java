@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+// Repository的作用是提示这是数据访问操作，JPA可加可不加
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);

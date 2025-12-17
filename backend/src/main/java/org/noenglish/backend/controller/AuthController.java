@@ -37,17 +37,6 @@ public class AuthController {
         return ApiResponse.success(loginData);
     }
 
-    // 测试受保护接口
-    @GetMapping("/hello")
-    public ResponseEntity<?> hello(@RequestHeader("Authorization") String token) {
-        String actualToken = token.replace("Bearer ", "");
-        if (!JwtUtil.validateToken(actualToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        }
-        String username = JwtUtil.getUsernameFromToken(actualToken);
-        return ResponseEntity.ok("Hello " + username);
-    }
-
     @PostMapping("/user/avatar")
     public ApiResponse<String> uploadAvatar(@RequestParam("file") MultipartFile file,
                                             @RequestParam("userId") Long userId) {

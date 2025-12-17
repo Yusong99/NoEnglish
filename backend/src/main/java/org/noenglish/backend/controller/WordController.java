@@ -1,13 +1,10 @@
 package org.noenglish.backend.controller;
 
-import org.noenglish.backend.entity.Word;
+import org.noenglish.backend.dto.WordSearchResponse;
 import org.noenglish.backend.service.WordService;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/words")
@@ -21,21 +18,25 @@ public class WordController {
     }
 
     @GetMapping("/search")
-    public Map<String, Object> search(
+    public WordSearchResponse search(
             @RequestParam String q,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestAttribute("userId") Long userId
     ) {
-        Page<Word> result = wordService.search(q, page, size);
+//        Long userId = (long) request.getAttribute("userId");
 
-        Map<String, Object> res = new HashMap<>();
-        res.put("list", result.getContent());
-        res.put("page", result.getNumber());
-        res.put("totalPages", result.getTotalPages());
-        res.put("totalElements", result.getTotalElements());
-        res.put("hasMore", result.hasNext());
+//        Page<Word> result = wordService.search(q, page, size);
 
-        return res;
+//        WordSearchResponse res = new HashMap<>();
+//        res.put("list", result.getContent());
+//        res.put("page", result.getNumber());
+//        res.put("totalPages", result.getTotalPages());
+//        res.put("totalElements", result.getTotalElements());
+//        res.put("hasMore", result.hasNext());
+
+//        return res;
+        return wordService.search(q, page, size, userId);
     }
 
 }

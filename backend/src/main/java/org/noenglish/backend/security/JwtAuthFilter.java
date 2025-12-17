@@ -24,44 +24,45 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        // 放行
-        if (path.startsWith("/auth") || path.startsWith("/avatar")) {
+        // 登录及注册不需要验证token
+        if (path.startsWith("/auth")) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        // 没带token
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             unauthorized(response, "未登录");
             return;
         }
 
         String token = authHeader.substring(7);
+        logger.info(token);
 
         try {
             Claims claims = JwtUtil.parseToken(token);
-
+            logger.info("1");
             if (JwtUtil.isExpired(claims)) {
-                unauthorized(response, "token 已过期");
+                unauthorized(response, "登录已过期");
                 return;
             }
-
-            // ✔️ 解析 userId
             Long userId = Long.valueOf(claims.getSubject());
-
-            // 保存到 request，后面 Controller 可用
+            logger.info("2");
+            // 放进 request，后面Controller拿到
             request.setAttribute("userId", userId);
-
-        } catch (JwtException e) {
-            unauthorized(response, "token 无效");
-            return;
+            logger.info("3");
+            filterChain.doFilter(request, response);
+            logger.info("4");
+        } catch (Exception e) {
+            unauthorized(response, "token无效");
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private void unauthorized(HttpServletResponse response, String msg) throws IOException {
-        response.setStatus(401);
+        logger.info(msg);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write("{\"code\":401,\"msg\":\"" + msg + "\"}");
     }
