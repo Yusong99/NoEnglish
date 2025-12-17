@@ -124,6 +124,13 @@ export default function App() {
             <View style={{justifyContent: 'center', alignItems: 'center' }}>
                 <Text>欢迎来到首页！</Text>
                 <Button title="查看缓存" onPress={logStorage} />
+                <Button
+                    title="清空本地登录状态"
+                    onPress={async () => {
+                        await AsyncStorage.removeItem('token');
+                        console.log('token 已清空');
+                    }}
+                />
             </View>
         </SafeAreaView>
     )
