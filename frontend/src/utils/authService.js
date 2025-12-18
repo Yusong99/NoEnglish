@@ -36,10 +36,11 @@ export const login = async (username, password) => {
             const userId = res.data.data.id;
             const avatar = res.data.data.avatarUrl;
             const userName = res.data.data.username;
-            await AsyncStorage.setItem('userName', userName + '');
-            await AsyncStorage.setItem('token', token + ''); // 保存到本地
-            await AsyncStorage.setItem('userId', userId + '');
-            await AsyncStorage.setItem('avatar', avatar + '');
+            // 确保不会把字符串null存进去，如果为空就存进去空字符串，不影响以后判断
+            await AsyncStorage.setItem('userName', userName ? userName + '' : '');
+            await AsyncStorage.setItem('token', token ? userId + '' : ''); // 保存到本地
+            await AsyncStorage.setItem('userId', userId ? userId + '' : '');
+            await AsyncStorage.setItem('avatar', avatar ? avatar + '' : '');
             Toast.show({
                 type: 'success',
                 text1: "登录成功",
