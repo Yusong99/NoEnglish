@@ -5,6 +5,7 @@ import {useState, useEffect} from "react";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../utils/api";
 
 export default function ProfileScreen() {
     const defaultAvatar = "../../assets/icon.png";
@@ -12,8 +13,9 @@ export default function ProfileScreen() {
     useEffect( () => {
         async function fetchData(){
             const savedAvatar = await AsyncStorage.getItem("avatar");
-            console.log(savedAvatar)
+            console.log('avatar' + savedAvatar)
             setAvatar(savedAvatar);
+            console.log(avatar? 'true' : 'false')
         }
         fetchData().then(r => null)
     },[])
@@ -48,7 +50,7 @@ export default function ProfileScreen() {
             });
             formData.append("userId", userId);
 
-            const res = await axios.post(
+            const res = await api.post(
                 "http://192.168.124.4:8080/auth/user/avatar", // 注意不要用 localhost，换成电脑局域网 IP
                 formData,
                 {
@@ -64,12 +66,18 @@ export default function ProfileScreen() {
         }
     };
 
+    // 设置头像url
+    const avatarSource =
+        avatar && avatar !== 'null' && avatar.startsWith('http')
+            ? { uri: avatar.replace('localhost', '192.168.124.4') }
+            : require('../../assets/avatar.png');
+
     return (
         <SafeAreaView>
             <View>
                 <View style={styles.container}>
                     <TouchableOpacity onPress={pickImage}>
-                        <Image source={ avatar ? { uri: avatar.replace("localhost", "192.168.124.4") } : require('../../assets/icon.png') }
+                        <Image source={ avatarSource }
                                style={styles.avatar}/>
                     </TouchableOpacity>
                 </View>
