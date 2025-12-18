@@ -46,7 +46,7 @@ export const login = async (username, password) => {
                 autoHide: true,
                 visibilityTime: 1000,
             })
-            router.navigate('/pages/HomeScreen'); //登陆成功后跳转的界面
+            router.navigate('/(tabs)/profile'); //登陆成功后跳转的界面
             return token;
         }else if (res.data?.code === 1001) {
             Toast.show({
