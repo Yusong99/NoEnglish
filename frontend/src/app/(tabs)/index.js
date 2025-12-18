@@ -128,6 +128,9 @@ export default function App() {
                     title="清空本地登录状态"
                     onPress={async () => {
                         await AsyncStorage.removeItem('token');
+                        await AsyncStorage.removeItem('avatar');
+                        await AsyncStorage.removeItem('userId');
+                        await AsyncStorage.removeItem('userName');
                         console.log('token 已清空');
                     }}
                 />
