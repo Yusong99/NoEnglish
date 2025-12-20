@@ -14,4 +14,5 @@ public class LoginResponse {
     private String token;     // JWT
     private String tokenType = "Bearer"; // 默认类型
     private String avatarUrl;
+    private Long avatarId; //用户选择的头像号
 }
