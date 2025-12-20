@@ -14,4 +14,6 @@ public interface UserService {
     boolean existsByUsername(String username);
 
     String updateAvatar(Long userId, MultipartFile file) throws IOException;
+
+    void updateAvatarId(Long userId, Long avatarId) throws IOException;
 }

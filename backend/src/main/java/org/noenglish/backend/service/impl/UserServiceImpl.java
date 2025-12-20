@@ -63,4 +63,12 @@ public class UserServiceImpl implements UserService {
 
         return url;
     }
+
+    @Override
+    public void updateAvatarId(Long userId, Long avatarId) throws IOException {
+        int rows = userRepository.updateAvatarId(userId, avatarId);
+        if (rows == 0) {
+            throw new RuntimeException("用户不存在");
+        }
+    }
 }

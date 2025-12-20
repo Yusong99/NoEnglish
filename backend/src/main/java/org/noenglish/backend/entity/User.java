@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -25,4 +25,6 @@ public class User {
     private String avatarUrl;
 
     private Boolean enabled = true;
+
+    private Long avatarId;
 }

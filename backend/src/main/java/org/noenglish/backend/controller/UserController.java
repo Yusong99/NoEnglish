@@ -1,11 +1,15 @@
 package org.noenglish.backend.controller;
 
+import lombok.extern.java.Log;
 import org.noenglish.backend.common.ApiResponse;
 import org.noenglish.backend.entity.User;
 import org.noenglish.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -43,5 +47,14 @@ public class UserController {
         } catch (Exception e) {
             return ApiResponse.error(5000, "上传失败：" + e.getMessage());
         }
+    }
+
+    /**
+     * 用户选择自己的头像
+     */
+    @PostMapping("/avatarId")
+    public ApiResponse<String> uploadAvatarId(@RequestAttribute("userId") Long userId, @RequestParam Long avatarId) throws IOException {
+        userService.updateAvatarId(userId, avatarId);
+        return ApiResponse.success("更新头像ID成功");
     }
 }
