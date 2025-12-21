@@ -15,6 +15,8 @@ export default function ProfileScreen() {
     }
     const [avatar, setAvatar] = useState('');
     const [avatarId, setAvatarId] = useState(null)
+    const [userName, setUserName] = useState(null);
+
     useEffect(() => {
         async function fetchData() {
             const savedAvatar = await AsyncStorage.getItem("avatar");
@@ -23,6 +25,8 @@ export default function ProfileScreen() {
                 setAvatarId(Number(savedAvatarID)); // ⭐ 关键，读取avatarmap内数据需要number类型，但是async只能存string
             }
             setAvatar(savedAvatar);
+            const name = await AsyncStorage.getItem('userName');
+            setUserName(name); // name 为 string 或 null
         }
 
         fetchData().then(r => null)
@@ -147,20 +151,34 @@ export default function ProfileScreen() {
             {/*            style={styles.avatar}/>*/}
             {/*    </TouchableOpacity>*/}
             {/*</View>*/}
-            <Avatar
-                size={64}
-                rounded={true}
-                source={avatarId ? avatarMap[avatarId] : undefined}
-                avatarStyle={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: 32,
-                    resizeMode: 'contain',
-                }}
-                onPress={toggle}
-            />
-            <Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>
-            <Text style={styles.name}>{AsyncStorage.getItem('userName')}</Text>
+            <View style={styles.row}>
+                <View style={styles.left}>
+                    <Avatar
+                        size={64}
+                        rounded={true}
+                        source={avatarId ? avatarMap[avatarId] : require('../../assets/avatars/avatar.png')}
+                        avatarStyle={{
+                            width: 64,
+                            height: 64,
+                            borderRadius: 32,
+                            resizeMode: 'contain',
+                        }}
+                        onPress={toggle}
+                    />
+                </View>
+                <View style={styles.right}>
+                    {/*<Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>*/}
+                    {/*<Text style={styles.name}>{AsyncStorage.getItem('userName')}</Text>*/}
+                    {userName ? (
+                        <Text style={styles.name}>{userName}</Text>
+                    ) : (
+                        <Button
+                            title="我要登录"
+                            onPress={() => router.push('/auth/login')}
+                        />
+                    )}
+                </View>
+            </View>
             <Dialog isVisible={visible}
                     onBackdropPress={toggle}
             >
@@ -206,8 +224,24 @@ const styles = StyleSheet.create({
         borderRadius: 60,
         backgroundColor: "#ddd",
     },
+    row: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',      // 垂直居中
+        paddingVertical: 16,
+    },
+    left: {
+        width: '50%',              // 左半
+        alignItems: 'center',      // 水平居中
+        justifyContent: 'center',
+    },
+    right: {
+        width: '50%',              // 右半
+        alignItems: 'center',      // 水平居中
+        justifyContent: 'center',
+    },
     name: {
         fontSize: 20,
-        textAlign: "center",
-    }
+        fontWeight: '600',
+    },
 })
