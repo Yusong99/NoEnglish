@@ -20,7 +20,7 @@ export default function ProfileScreen() {
             const savedAvatar = await AsyncStorage.getItem("avatar");
             const savedAvatarID = await AsyncStorage.getItem("avatarId");
             if (savedAvatarID) {
-                setAvatarId(Number(savedAvatarID)); // ⭐ 关键
+                setAvatarId(Number(savedAvatarID)); // ⭐ 关键，读取avatarmap内数据需要number类型，但是async只能存string
             }
             setAvatar(savedAvatar);
         }
@@ -87,7 +87,6 @@ export default function ProfileScreen() {
             )
             setAvatarId(id)
             await AsyncStorage.setItem("avatarId", String(id));
-            console.log(avatarId)
             toggle() // 关闭弹窗
         } catch (err) {
             console.log('更改失败')
@@ -139,20 +138,15 @@ export default function ProfileScreen() {
             console.log('设置头像失败', e);
         }
     };
-
-    const avatarSource = avatarMap[1]
-    console.log(avatarSource)
     return (
         <SafeAreaView>
-            <View style={styles.container}>
-                <TouchableOpacity onPress={pickImage}>
-                    <Image
-                        source={avatar ? {uri: avatar.replace("localhost", "192.168.124.4")} : require('../../assets/avatar.png')}
-                        style={styles.avatar}/>
-                </TouchableOpacity>
-            </View>
-            <Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>
-            <Text style={styles.name}>{AsyncStorage.getItem('userName')}</Text>
+            {/*<View style={styles.container}>*/}
+            {/*    <TouchableOpacity onPress={pickImage}>*/}
+            {/*        <Image*/}
+            {/*            source={avatar ? {uri: avatar.replace("localhost", "192.168.124.4")} : require('../../assets/avatar.png')}*/}
+            {/*            style={styles.avatar}/>*/}
+            {/*    </TouchableOpacity>*/}
+            {/*</View>*/}
             <Avatar
                 size={64}
                 rounded={true}
@@ -163,8 +157,10 @@ export default function ProfileScreen() {
                     borderRadius: 32,
                     resizeMode: 'contain',
                 }}
+                onPress={toggle}
             />
-            <Button title={'点击显示'} onPress={toggle}></Button>
+            <Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>
+            <Text style={styles.name}>{AsyncStorage.getItem('userName')}</Text>
             <Dialog isVisible={visible}
                     onBackdropPress={toggle}
             >
