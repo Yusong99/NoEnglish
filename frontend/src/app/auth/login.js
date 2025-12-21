@@ -18,7 +18,8 @@ export default function Login() {
                 type: 'error',
                 text1: err.message,
                 autoHide: true,
-                visibilityTime: 2000
+                visibilityTime: 2000,
+                position: "bottom"
             })
             return null
         }

@@ -1,4 +1,4 @@
-import {View, StyleSheet, Button, TouchableOpacity, Image, Text} from "react-native";
+import {View, StyleSheet, Button, TouchableOpacity, Image, Text, ScrollView} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {router} from "expo-router";
 import {useState, useEffect} from "react";
@@ -6,13 +6,22 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../utils/api";
 import {Avatar} from '@rneui/themed';
+import {Dialog} from '@rneui/themed';
 
 export default function ProfileScreen() {
-    const defaultAvatar = "../../assets/icon.png";
+    const [visible, setVisible] = useState(false)
+    const toggle = () => {
+        setVisible(!visible)
+    }
     const [avatar, setAvatar] = useState('');
+    const [avatarId, setAvatarId] = useState(null)
     useEffect(() => {
         async function fetchData() {
             const savedAvatar = await AsyncStorage.getItem("avatar");
+            const savedAvatarID = await AsyncStorage.getItem("avatarId");
+            if (savedAvatarID) {
+                setAvatarId(Number(savedAvatarID)); // ⭐ 关键
+            }
             setAvatar(savedAvatar);
         }
 
@@ -65,6 +74,26 @@ export default function ProfileScreen() {
         }
     };
 
+    const toggleAvatar = async (id) => {
+        try {
+            const res = await api.post(
+                "http://192.168.124.4:8080/user/avatarId",
+                null,
+                {
+                    params: {
+                        avatarId: id
+                    }
+                }
+            )
+            setAvatarId(id)
+            await AsyncStorage.setItem("avatarId", String(id));
+            console.log(avatarId)
+            toggle() // 关闭弹窗
+        } catch (err) {
+            console.log('更改失败')
+        }
+    }
+
     const avatarMap = {
         1: require('../../assets/avatars/Multiavatar-avatar1.png'),
         2: require('../../assets/avatars/Multiavatar-avatar2.png'),
@@ -104,9 +133,7 @@ export default function ProfileScreen() {
             const res = await api.post('/user/avatarId', {
                 avatarKey,
             });
-
             const avatarUrl = res.data.data;
-
             await AsyncStorage.setItem("avatarId", avatarKey);
         } catch (e) {
             console.log('设置头像失败', e);
@@ -129,7 +156,7 @@ export default function ProfileScreen() {
             <Avatar
                 size={64}
                 rounded={true}
-                source={require('../../assets/avatars/Multiavatar-avatar30.png')}
+                source={avatarId ? avatarMap[avatarId] : undefined}
                 avatarStyle={{
                     width: 64,
                     height: 64,
@@ -137,6 +164,41 @@ export default function ProfileScreen() {
                     resizeMode: 'contain',
                 }}
             />
+            <Button title={'点击显示'} onPress={toggle}></Button>
+            <Dialog isVisible={visible}
+                    onBackdropPress={toggle}
+            >
+                <Dialog.Title title="选择头像"></Dialog.Title>
+                <ScrollView
+                    contentContainerStyle={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'flex-start',
+                    }}
+                    style={{maxHeight: 300}}>
+                    {Object.entries(avatarMap).map(([id, img]) => (
+                        <TouchableOpacity
+                            key={id}
+                            onPress={() => {
+                                toggleAvatar(id).then(r => null)
+                            }}
+                            style={{width: '33.33%', padding: 10, alignItems: 'center'}}
+                        >
+                            <Avatar
+                                size={64}
+                                rounded={true}
+                                source={img}
+                                avatarStyle={{
+                                    width: 64,
+                                    height: 64,
+                                    borderRadius: 32,
+                                    resizeMode: 'contain',
+                                }}
+                            />
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+            </Dialog>
         </SafeAreaView>
     );
 }
