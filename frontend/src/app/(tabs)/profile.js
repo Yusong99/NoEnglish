@@ -1,7 +1,7 @@
-import {View, StyleSheet, Button, TouchableOpacity, Image, Text, ScrollView} from "react-native";
+import {View, StyleSheet, Button, TouchableOpacity, Image, Text, ScrollView, DevSettings} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {router} from "expo-router";
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../utils/api";
@@ -179,6 +179,13 @@ export default function ProfileScreen() {
                     )}
                 </View>
             </View>
+            <Button
+                title="退出登录"
+                onPress={async () => {
+                    await AsyncStorage.clear();
+                    DevSettings.reload()
+                }}
+            />
             <Dialog isVisible={visible}
                     onBackdropPress={toggle}
             >
