@@ -13,6 +13,10 @@ export default function Layout() {
                     <Icon sf="star" drawable="custom_settings_drawable"/>
                     <Label>收藏</Label>
                 </NativeTabs.Trigger>
+                <NativeTabs.Trigger name="recite">
+                    <Icon sf="testtube.2" drawable="custom_settings_drawable"/>
+                    <Label>背词</Label>
+                </NativeTabs.Trigger>
                 <NativeTabs.Trigger name="profile">
                     <Icon sf="person.fill" drawable="custom_settings_drawable"/>
                     <Label>个人</Label>
