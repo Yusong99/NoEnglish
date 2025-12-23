@@ -142,6 +142,7 @@ export default function ProfileScreen() {
             console.log('设置头像失败', e);
         }
     };
+    // TODO:下半界面添加类似github那种学习阵列图
     return (
         <SafeAreaView>
             {/*<View style={styles.container}>*/}
