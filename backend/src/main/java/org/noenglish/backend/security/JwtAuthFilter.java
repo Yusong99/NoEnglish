@@ -25,7 +25,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // 登录及注册不需要验证token
-        if (path.startsWith("/auth") || path.startsWith("/avatar/")) {
+        if (path.startsWith("/auth") || path.startsWith("/avatar/") || path.startsWith("/api/dictionaries")) {
             filterChain.doFilter(request, response);
             return;
         }
