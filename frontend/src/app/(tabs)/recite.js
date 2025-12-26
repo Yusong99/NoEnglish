@@ -1,36 +1,23 @@
 import {SafeAreaView} from "react-native-safe-area-context";
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
-
-const DICTIONARIES = [
-    {
-        id: 'cet4',
-        title: 'JLPT N2词汇',
-        cover: require('../../assets/dicts/N2.png'),
-        description: 'JLPT N2重点词汇',
-    },
-    {
-        id: 'cet6',
-        title: '大学英语六级词汇',
-        cover: require('../../assets/avatars/Multiavatar-avatar1.png'),
-        description: '六级考试常考词汇，进阶提升。',
-    },
-    {
-        id: 'ielts',
-        title: 'IELTS 核心词汇',
-        cover: require('../../assets/avatars/Multiavatar-avatar3.png'),
-        description: '听说读写四项高频词汇。',
-    },
-    {
-        id: 'toefl',
-        title: 'TOEFL 词汇精选',
-        cover: require('../../assets/avatars/Multiavatar-avatar4.png'),
-        description: '学术场景常用词汇。',
-    },
-];
+import api from "../../utils/api";
 
 export default function ReciteScreen() {
+    const [dicList, setDiclist] = useState([]);
+    useEffect( () => {
+        async function fecth() {
+            const res = await api.get('/api/dictionaries',{
+                params: {
+                    lang: 'ja'
+                }
+            })
+            setDiclist(res.data)
+            console.log(JSON.stringify(res.data, null, 2));
+        }
+        fecth().then()
+    },[])
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -42,8 +29,8 @@ export default function ReciteScreen() {
                 });
             }}
         >
-            <Image source={item.cover} style={styles.cover} />
-            <Text style={styles.title}>{item.title}</Text>
+            <Image   source={{ uri: item.coverUrl.replace('localhost', '192.168.124.4') }} style={styles.cover} />
+            <Text style={styles.title}>{item.name}</Text>
         </TouchableOpacity>
     );
 
@@ -52,8 +39,8 @@ export default function ReciteScreen() {
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>选择一本辞书</Text>
             <FlatList
-                data={DICTIONARIES}
-                keyExtractor={(item) => item.id}
+                data={dicList}
+                keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
                 renderItem={renderItem}
