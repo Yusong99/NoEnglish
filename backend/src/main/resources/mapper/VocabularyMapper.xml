@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.noenglish.backend.mapper.VocabularyMapper">
+
+    <select id="selectRandomByLevel"
+            resultType="org.noenglish.backend.dto.Vocabulary">
+        SELECT *
+        FROM vocabulary
+        WHERE level = #{level}
+        ORDER BY RAND()
+            LIMIT #{limit}
+    </select>
+
+</mapper>
