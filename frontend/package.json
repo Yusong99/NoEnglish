@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "format": "prettier --write \"**/*.{js,json,md,ts,jsx,tsx}\""
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -14,7 +15,7 @@
     "@rneui/base": "^4.0.0-rc.8",
     "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.7.9",
-    "expo": "~54.0.30",
+    "expo": "^54.0.30",
     "expo-constants": "~18.0.10",
     "expo-font": "~14.0.10",
     "expo-image-picker": "~17.0.10",
@@ -28,5 +29,8 @@
     "react-native-toast-message": "^2.3.3",
     "urlcat": "^3.1.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.7.4"
+  }
 }
