@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import { router } from 'expo-router'
 import api from '../../utils/api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function ReciteScreen() {
   const [dicList, setDiclist] = useState([])
@@ -13,6 +14,14 @@ export default function ReciteScreen() {
           lang: 'ja',
         },
       })
+      const res2 = await api.get('/api/vocab/random', {
+        params: {
+          level: 'N2',
+        },
+      })
+      if (res2.data.code === 200) {
+        await AsyncStorage.setItem('wordsList', JSON.stringify(res2.data.data))
+      }
       setDiclist(res.data)
       console.log(JSON.stringify(res.data, null, 2))
     }

@@ -3,7 +3,7 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage' // 用于存储 JWT
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080', // 换成你后端 IP + 端口
+  baseURL: 'http://192.168.124.4:8080', // 换成你后端 IP + 端口
   timeout: 5000,
   headers: { 'Content-Type': 'application/json' },
 })
