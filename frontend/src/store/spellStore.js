@@ -11,5 +11,13 @@ export const useStore = create((set) => {
         count: state.count + 1,
       }))
     },
+    // 单词测试数据
+    wordsList: [],
+    // 更新单词的数据
+    freshWordsList: (list) => {
+      set(() => ({
+        wordsList: list,
+      }))
+    },
   }
 })
