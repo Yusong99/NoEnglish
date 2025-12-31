@@ -27,7 +27,6 @@ export const register = async (username, password) => {
     throw error.response?.data || { message: '注册失败' }
   }
 }
-login
 
 export const login = async (username, password) => {
   try {
