@@ -27,7 +27,6 @@ export const useStore = create((set, get) => {
     inputAtIndex: (index, char) => {
       const { wordsList, currentIndex, userInput } = get()
       const answerChars = [...wordsList[currentIndex].kana]
-
       // 错误
       if (answerChars[index] !== char) {
         set({ userInput: Array(answerChars.length).fill('') })
@@ -50,6 +49,35 @@ export const useStore = create((set, get) => {
 
       return true
     },
+    // 临时输入（不校验）
+    updateTempInput: (index, text) => {
+      const { userInput } = get()
+      const newInput = [...userInput]
+      newInput[index] = text
+      set({ userInput: newInput })
+    },
+    //输入法确认后再校验
+    handleConfirm: (index, text) => {
+      const { words, currentIndex, userInput } = get()
+      const answer = [...words[currentIndex].word]
+
+      if (text !== answer[index]) {
+        // 错误：全部清空
+        set({ userInput: Array(answer.length).fill('') })
+        return false
+      }
+
+      // 正确 → 跳到下一个
+      if (index === answer.length - 1) {
+        set({
+          currentIndex: currentIndex + 1,
+          userInput: [],
+        })
+      }
+
+      return true
+    },
+
     // 状态数据
     count: 0,
     // 修改状态数据的方法

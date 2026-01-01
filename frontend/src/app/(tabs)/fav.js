@@ -8,8 +8,16 @@ import api from '../../utils/api'
 import { useRef } from 'react'
 
 export default function FavScreen() {
-  const { userInput, inputAtIndex, wordsList, initCurrentWord, currentIndex, freshWordsList } =
-    useStore()
+  const {
+    userInput,
+    inputAtIndex,
+    wordsList,
+    initCurrentWord,
+    currentIndex,
+    freshWordsList,
+    handleConfirm,
+    updateTempInput,
+  } = useStore()
   const setWords = useStore((state) => state.setWords)
   useEffect(() => {
     if (wordsList.length > 0) {
@@ -40,12 +48,13 @@ export default function FavScreen() {
     if (!text) return
 
     const char = text.slice(-1)
-    const ok = inputAtIndex(index, char)
+    console.log('duan dian 1')
+    console.log('duan dian 2')
+    const ok = handleConfirm(index, text)
 
     if (ok) {
       inputRefs.current[index + 1]?.focus()
     } else {
-      // 错误：回到第一个
       inputRefs.current[0]?.focus()
     }
   }
@@ -60,14 +69,19 @@ export default function FavScreen() {
       <View style={styles.row}>
         {answerChars.map((_, index) => (
           <TextInput
-            key={index}
             ref={(ref) => (inputRefs.current[index] = ref)}
             style={styles.input}
             value={userInput[index] ?? ''}
-            maxLength={1}
             autoCorrect={false}
             autoCapitalize="none"
-            onChangeText={(text) => handleInput(index, text)}
+            onChangeText={(text) => {
+              // 只更新显示，不校验
+              updateTempInput(index, text)
+            }}
+            onEndEditing={(e) => {
+              const text = e.nativeEvent.text
+              handleConfirm(index, text)
+            }}
           />
         ))}
       </View>
