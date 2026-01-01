@@ -1,6 +1,5 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
+import { Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import { router } from 'expo-router'
 import api from '../../utils/api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -47,7 +46,7 @@ export default function ReciteScreen() {
   )
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <Text style={styles.header}>选择一本辞书</Text>
       <FlatList
         data={dicList}
@@ -57,7 +56,7 @@ export default function ReciteScreen() {
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
       />
-    </SafeAreaView>
+    </>
   )
 }
 

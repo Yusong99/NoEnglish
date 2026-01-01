@@ -1,6 +1,4 @@
-import { Text, ScrollView, StyleSheet, Button, FlatList, View, TextInput } from 'react-native'
-import { StatusBar } from 'expo-status-bar'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { StyleSheet, Button, View, TextInput } from 'react-native'
 import { Input } from '@rneui/themed'
 import { useStore } from '../../store/spellStore'
 import { useEffect, useState } from 'react'
@@ -59,7 +57,7 @@ export default function FavScreen() {
     }
   }
   return (
-    <SafeAreaView>
+    <>
       <Input
         placeholder=""
         containerStyle={{ width: 50 }}
@@ -86,7 +84,7 @@ export default function FavScreen() {
         ))}
       </View>
       <Button title={'点击'} onPress={getWords}></Button>
-    </SafeAreaView>
+    </>
   )
 }
 

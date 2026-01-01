@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { register } from '../../utils/authService'
 import Toast from 'react-native-toast-message'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Register() {
   const [username, setUsername] = useState('')
@@ -23,7 +22,7 @@ export default function Register() {
   }
 
   return (
-    <SafeAreaView style={{ padding: 20 }}>
+    <>
       <TextInput
         placeholder="用户名"
         value={username}
@@ -43,7 +42,7 @@ export default function Register() {
         </TouchableOpacity>
       </View>
       <Text style={{ marginTop: 20 }}>{message}</Text>
-    </SafeAreaView>
+    </>
   )
 }
 const styles = StyleSheet.create({

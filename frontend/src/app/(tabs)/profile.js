@@ -8,7 +8,6 @@ import {
   ScrollView,
   DevSettings,
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
 import React, { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker'
@@ -149,7 +148,7 @@ export default function ProfileScreen() {
   }
   // TODO:下半界面添加类似github那种学习阵列图
   return (
-    <SafeAreaView>
+    <>
       {/*<View style={styles.container}>*/}
       {/*    <TouchableOpacity onPress={pickImage}>*/}
       {/*        <Image*/}
@@ -222,7 +221,7 @@ export default function ProfileScreen() {
           ))}
         </ScrollView>
       </Dialog>
-    </SafeAreaView>
+    </>
   )
 }
 const styles = StyleSheet.create({

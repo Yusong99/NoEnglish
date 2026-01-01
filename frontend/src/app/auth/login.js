@@ -3,7 +3,6 @@ import { useRouter } from 'expo-router'
 import { login } from '../../utils/authService'
 import Toast from 'react-native-toast-message'
 import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -26,7 +25,7 @@ export default function Login() {
   }
 
   return (
-    <SafeAreaView style={{ padding: 20 }}>
+    <>
       <TextInput
         placeholder="用户名"
         value={username}
@@ -46,7 +45,7 @@ export default function Login() {
         </TouchableOpacity>
       </View>
       <Button title={'忘记密码？'} onPress={() => router.replace('/auth/register')}></Button>
-    </SafeAreaView>
+    </>
   )
 }
 const styles = StyleSheet.create({

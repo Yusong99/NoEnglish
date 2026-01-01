@@ -1,8 +1,9 @@
-import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import api from '../../utils/api'
+import { Input, Button, Icon } from '@rneui/themed'
+import { LinearGradient } from 'expo-linear-gradient'
 
 export default function App() {
   const [keyword, setKeyword] = useState('')
@@ -72,20 +73,33 @@ export default function App() {
     )
   }
   return (
-    <SafeAreaView>
+    <View style={{ backgroundColor: '#E9ECEF', flex: 1 }}>
       <View style={styles.container}>
         {/* 搜索框 */}
         <View style={styles.searchBox}>
-          <TextInput
+          <Input
             value={keyword}
             onChangeText={setKeyword}
             placeholder="输入日语单词"
-            style={styles.input}
-            onSubmitEditing={search}
+            placeholderTextColor={silverTheme.placeholderColor}
+            // 1. 这里的 containerStyle 控制整个组件占用的空间
+            containerStyle={styles.inputOuterContainer}
+            // 2. 这里的 inputContainerStyle 才是你看到的那个“银灰色框”
+            inputContainerStyle={silverTheme.inputContainer}
+            inputStyle={silverTheme.inputText}
+            onSubmitEditing={onSearch}
+            // 3. 左侧图标
+            rightIcon={
+              <Icon
+                name="search"
+                type="feather"
+                size={20}
+                color={silverTheme.iconColor}
+                containerStyle={{ marginRight: 8 }} // 让图标和文字有点距离
+                onPress={onSearch}
+              />
+            }
           />
-          <TouchableOpacity onPress={onSearch} style={styles.button}>
-            <Text style={styles.buttonText}>搜索</Text>
-          </TouchableOpacity>
         </View>
 
         {/* 结果列表 */}
@@ -107,7 +121,6 @@ export default function App() {
         />
       </View>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Text>欢迎来到首页！</Text>
         <Button title="查看缓存" onPress={logStorage} />
         <Button
           title="清空本地登录状态"
@@ -117,29 +130,75 @@ export default function App() {
           }}
         />
       </View>
-    </SafeAreaView>
+    </View>
   )
+}
+const silverTheme = {
+  // 容器样式：控制外边距
+  container: {
+    paddingHorizontal: 0,
+    marginVertical: 5,
+  },
+  // 输入框外框：这是实现“银色质感”的核心
+  inputContainer: {
+    backgroundColor: '#F5F5F5', // 极浅的底色
+    borderRadius: 10,
+    borderBottomWidth: 0, // 去掉原生的下划线
+    paddingHorizontal: 15,
+    // 银灰色边框
+    borderWidth: 1,
+    borderColor: '#D1D9E6',
+    // 阴影效果（仅 iOS 有效，Android 需用 elevation）
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  // 输入文字的样式
+  inputText: {
+    color: '#4A4A4A',
+    fontSize: 16,
+  },
+  // 占位符颜色
+  placeholderColor: '#AAB1B7',
+  // 图标颜色
+  iconColor: '#8E9AAF',
 }
 const styles = StyleSheet.create({
   searchBox: {
-    flexDirection: 'row',
-    marginBottom: 12,
+    paddingTop: 20,
+    paddingHorizontal: 15, // 给整个搜索区域留点左右间距
+    alignItems: 'center', // 这会让 Button 居中
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 6,
-    paddingHorizontal: 10,
+  inputOuterContainer: {
+    paddingHorizontal: 0, // 清除 Input 组件默认的侧边内边距
+    width: '100%', // 强制输入框占满屏幕宽度
   },
-  button: {
-    marginLeft: 8,
-    backgroundColor: '#4f46e5',
-    paddingHorizontal: 14,
-    justifyContent: 'center',
-    borderRadius: 6,
+  buttonContainer: {
+    width: 120, // 稍微宽一点更有质感
+    borderRadius: 25, // 圆角大一点配合银色更高级
+    marginTop: 10,
+    // 按钮阴影
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  buttonInner: {
+    paddingVertical: 12,
+    backgroundColor: 'transparent',
   },
   buttonText: {
-    color: '#fff',
+    color: '#546e7a', // 深蓝灰色文字，比纯黑更有高级感
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  button: {
+    width: 80,
+    justifyContent: 'center',
+    borderRadius: 6,
   },
   item: {
     paddingVertical: 12,
@@ -155,10 +214,5 @@ const styles = StyleSheet.create({
   },
   meaning: {
     marginTop: 4,
-  },
-  pos: {
-    marginTop: 2,
-    color: '#999',
-    fontSize: 12,
   },
 })
