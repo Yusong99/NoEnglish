@@ -63,12 +63,12 @@ export default function App() {
 
   const renderItem = ({ item }) => {
     return (
-      <View style={{ padding: 12, borderBottomWidth: 1, borderColor: '#eee' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600' }}>{item.word}</Text>
+      <View style={styles.listItem}>
+        <Text style={styles.word}>{item.word}</Text>
 
-        {item.reading && <Text style={{ color: '#666' }}>{item.reading}</Text>}
+        {item.reading && <Text style={styles.reading}>{item.reading}</Text>}
 
-        <Text style={{ marginTop: 4 }}>{item.meaning}</Text>
+        <Text style={styles.meaning}>{item.meaning}</Text>
       </View>
     )
   }
@@ -103,22 +103,24 @@ export default function App() {
         </View>
 
         {/* 结果列表 */}
-        {loading && <Text>加载中...</Text>}
+        {loading && <Text style={{ textAlign: 'center', padding: 10 }}>加载中...</Text>}
 
-        <FlatList
-          data={list}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-          onEndReached={() => {
-            if (hasMore && !loading) {
-              search()
+        <View style={styles.listContainer}>
+          <FlatList
+            data={list}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+            onEndReached={() => {
+              if (hasMore && !loading) {
+                search()
+              }
+            }}
+            onEndReachedThreshold={0.3}
+            ListFooterComponent={
+              loading ? <Text style={{ textAlign: 'center', padding: 10 }}>加载中...</Text> : null
             }
-          }}
-          onEndReachedThreshold={0.3}
-          ListFooterComponent={
-            loading ? <Text style={{ textAlign: 'center' }}>加载中...</Text> : null
-          }
-        />
+          />
+        </View>
       </View>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Button title="查看缓存" onPress={logStorage} />
@@ -166,6 +168,9 @@ const silverTheme = {
   iconColor: '#8E9AAF',
 }
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   searchBox: {
     paddingTop: 20,
     paddingHorizontal: 15, // 给整个搜索区域留点左右间距
@@ -174,6 +179,25 @@ const styles = StyleSheet.create({
   inputOuterContainer: {
     paddingHorizontal: 0, // 清除 Input 组件默认的侧边内边距
     width: '100%', // 强制输入框占满屏幕宽度
+  },
+  listContainer: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
+  listItem: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D1D9E6',
+    padding: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginVertical: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
   },
   buttonContainer: {
     width: 120, // 稍微宽一点更有质感
@@ -213,6 +237,6 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   meaning: {
-    marginTop: 4,
+    marginTop: 0,
   },
 })
