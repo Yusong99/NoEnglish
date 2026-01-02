@@ -11,7 +11,9 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      await login(username, password)
+      await login(username, password).then((token) => {
+        if(token) router.replace('/(tabs)/profile')
+      })
     } catch (err) {
       Toast.show({
         type: 'error',
@@ -25,27 +27,29 @@ export default function Login() {
   }
 
   return (
-    <>
+    <View style={styles.mainContainer}>
       <TextInput
         placeholder="用户名"
         value={username}
         onChangeText={setUsername}
-        style={{ borderWidth: 1, marginBottom: 10, padding: 5 }}
+        style={styles.input}
       />
       <TextInput
         placeholder="密码"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        style={{ borderWidth: 1, marginBottom: 10, padding: 5 }}
+        style={styles.input}
       />
       <View style={styles.container}>
         <TouchableOpacity style={styles.btn} onPress={handleLogin}>
           <Text style={styles.label}>登录</Text>
         </TouchableOpacity>
       </View>
-      <Button title={'忘记密码？'} onPress={() => router.replace('/auth/register')}></Button>
-    </>
+      <TouchableOpacity style={styles.forgotPassword} onPress={() => router.replace('/auth/register')}>
+        <Text style={styles.forgotPasswordText}>忘记密码？</Text>
+      </TouchableOpacity>
+    </View>
   )
 }
 const styles = StyleSheet.create({

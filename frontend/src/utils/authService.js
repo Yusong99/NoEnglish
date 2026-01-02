@@ -50,7 +50,7 @@ export const login = async (username, password) => {
         visibilityTime: 1000,
         position: 'bottom',
       })
-      router.navigate('/(tabs)/profile') //登陆成功后跳转的界面
+      
       return token
     } else if (res.data?.code === 1001) {
       Toast.show({
