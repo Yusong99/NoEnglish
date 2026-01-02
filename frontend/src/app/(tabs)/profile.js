@@ -24,6 +24,7 @@ export default function ProfileScreen() {
   const [avatar, setAvatar] = useState('')
   const [avatarId, setAvatarId] = useState(null)
   const [userName, setUserName] = useState(null)
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +36,8 @@ export default function ProfileScreen() {
       setAvatar(savedAvatar)
       const name = await AsyncStorage.getItem('userName')
       setUserName(name) // name 为 string 或 null
+      const savedToken = await AsyncStorage.getItem('token')
+      setToken(savedToken)
     }
 
     fetchData().then((r) => null)
@@ -148,14 +151,7 @@ export default function ProfileScreen() {
   }
   // TODO:下半界面添加类似github那种学习阵列图
   return (
-    <>
-      {/*<View style={styles.container}>*/}
-      {/*    <TouchableOpacity onPress={pickImage}>*/}
-      {/*        <Image*/}
-      {/*            source={avatar ? {uri: avatar.replace("localhost", "192.168.124.4")} : require('../../assets/avatar.png')}*/}
-      {/*            style={styles.avatar}/>*/}
-      {/*    </TouchableOpacity>*/}
-      {/*</View>*/}
+    <View style={styles.mainContainer}>
       <View style={styles.row}>
         <View style={styles.left}>
           <Avatar
@@ -172,24 +168,22 @@ export default function ProfileScreen() {
           />
         </View>
         <View style={styles.right}>
-          {/*<Button title={'我要登录'} onPress={() => router.push('/auth/login')}></Button>*/}
-          {/*<Text style={styles.name}>{AsyncStorage.getItem('userName')}</Text>*/}
-          {userName ? (
-            <Text style={styles.name}>{userName}</Text>
+          {token ? (
+            <TouchableOpacity style={styles.logoutButton} onPress={async () => {
+              await AsyncStorage.clear()
+              DevSettings.reload()
+            }}>
+              <Text style={styles.logoutButtonText}>退出登录</Text>
+            </TouchableOpacity>
           ) : (
-            <Button title="我要登录" onPress={() => router.push('/auth/login')} />
+            <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/auth/login')}>
+              <Text style={styles.loginButtonText}>我要登录</Text>
+            </TouchableOpacity>
           )}
         </View>
       </View>
-      <Button
-        title="退出登录"
-        onPress={async () => {
-          await AsyncStorage.clear()
-          DevSettings.reload()
-        }}
-      />
-      <Dialog isVisible={visible} onBackdropPress={toggle}>
-        <Dialog.Title title="选择头像"></Dialog.Title>
+      <Dialog isVisible={visible} onBackdropPress={toggle} overlayStyle={{ backgroundColor: '#F5F5F5' }}>
+        <Dialog.Title title="选择头像" titleStyle={styles.dialogTitle} />
         <ScrollView
           contentContainerStyle={{
             flexDirection: 'row',
@@ -204,7 +198,7 @@ export default function ProfileScreen() {
               onPress={() => {
                 toggleAvatar(id).then((r) => null)
               }}
-              style={{ width: '33.33%', padding: 10, alignItems: 'center' }}
+              style={styles.avatarOption}
             >
               <Avatar
                 size={64}
@@ -221,35 +215,75 @@ export default function ProfileScreen() {
           ))}
         </ScrollView>
       </Dialog>
-    </>
+    </View>
   )
 }
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#E9ECEF',
+    padding: 20,
+  },
   container: { alignItems: 'center', marginTop: 40 },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#ddd',
+    backgroundColor: '#F5F5F5',
   },
   row: {
     flexDirection: 'row',
     width: '100%',
-    alignItems: 'center', // 垂直居中
+    alignItems: 'center',
     paddingVertical: 16,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    marginBottom: 20,
   },
   left: {
-    width: '50%', // 左半
-    alignItems: 'center', // 水平居中
+    width: '50%',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   right: {
-    width: '50%', // 右半
-    alignItems: 'center', // 水平居中
+    width: '50%',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   name: {
     fontSize: 20,
     fontWeight: '600',
+    color: '#333',
+  },
+  loginButton: {
+    backgroundColor: '#D1D9E6',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  loginButtonText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  logoutButton: {
+    backgroundColor: '#D1D9E6',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  logoutButtonText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  avatarOption: {
+    width: '33.33%',
+    padding: 10,
+    alignItems: 'center',
+  },
+  dialogTitle: {
+    color: '#333',
   },
 })
