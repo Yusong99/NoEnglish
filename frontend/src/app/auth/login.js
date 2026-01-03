@@ -12,7 +12,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       await login(username, password).then((token) => {
-        if(token) router.replace('/(tabs)/profile')
+        if(token) router.replace('../(tabs)/profile')
       })
     } catch (err) {
       Toast.show({

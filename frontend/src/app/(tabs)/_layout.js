@@ -1,28 +1,57 @@
-import Toast from 'react-native-toast-message'
-import { Icon, Label, NativeTabs } from 'expo-router/unstable-native-tabs'
+import { FontAwesome } from '@expo/vector-icons'
+import { Tabs } from 'expo-router'
 
 export default function Layout() {
   return (
-    <>
-      <NativeTabs>
-        <NativeTabs.Trigger name="index">
-          <Label>首页</Label>
-          <Icon sf="house.fill" drawable="custom_android_drawable" />
-        </NativeTabs.Trigger>
-        <NativeTabs.Trigger name="fav">
-          <Icon sf="star" drawable="custom_settings_drawable" />
-          <Label>收藏</Label>
-        </NativeTabs.Trigger>
-        <NativeTabs.Trigger name="recite">
-          <Icon sf="testtube.2" drawable="custom_settings_drawable" />
-          <Label>背词</Label>
-        </NativeTabs.Trigger>
-        <NativeTabs.Trigger name="profile">
-          <Icon sf="person.fill" drawable="custom_settings_drawable" />
-          <Label>个人</Label>
-        </NativeTabs.Trigger>
-      </NativeTabs>
-      <Toast position="bottom" bottomOffset={20} />
-    </>
+      <Tabs screenOptions={{
+        tabBarActiveTintColor: '#546e7a',
+        tabBarInactiveTintColor: '#AAB1B7',
+        tabBarStyle: {
+          backgroundColor: '#F5F5F5',
+          borderTopColor: '#D1D9E6',
+          borderTopWidth: 1,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 5,
+          height: 70,
+          paddingBottom: 5,
+          paddingTop: 5,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
+      }}>
+        <Tabs.Screen name="index"
+        options={{
+          title: '首页',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+        }}>
+        </Tabs.Screen>
+        <Tabs.Screen name="fav"
+        options={{
+          title: '收藏',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="heart" color={color} />,
+        }}>
+        </Tabs.Screen>
+        <Tabs.Screen name="recite"
+        options={{
+          title: '背词',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="book" color={color} />,
+        }}>
+        </Tabs.Screen>
+        <Tabs.Screen name="profile"
+        options={{
+          title: '个人资料',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,
+        }}>
+        </Tabs.Screen>
+      </Tabs>
   )
 }

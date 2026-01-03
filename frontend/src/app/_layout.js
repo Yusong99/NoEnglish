@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 
 export default function RootLayout() {
   return (
-    <SafeAreaView style={styles.pageBackground}>
+    <SafeAreaView style={styles.pageBackground} edges={['top', 'left', 'right']}>
       <Stack
         screenOptions={{
           headerShown: false,
