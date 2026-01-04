@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#E9ECEF',
   },
   header: {
     fontSize: 22,
@@ -78,6 +78,16 @@ const styles = StyleSheet.create({
     width: '48%',
     marginBottom: 20,
     alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D1D9E6',
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
   },
   cover: {
     width: '100%',
