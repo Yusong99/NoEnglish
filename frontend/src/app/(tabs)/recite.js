@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import { router } from 'expo-router'
-import api from '../../utils/api'
+import api from '../../utils/api.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function ReciteScreen() {
@@ -31,9 +31,10 @@ export default function ReciteScreen() {
     <TouchableOpacity
       style={styles.card}
       onPress={() => {
+        // 点击后跳转到背诵页面，并传递所选辞书的级别参数
         router.push({
-          pathname: '/dictionary/detail',
-          params: { id: item.id },
+          pathname: '/spell',
+          params: { level: item.level },
         })
       }}
     >

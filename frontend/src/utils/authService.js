@@ -50,7 +50,7 @@ export const login = async (username, password) => {
         visibilityTime: 1000,
         position: 'bottom',
       })
-      
+
       return token
     } else if (res.data?.code === 1001) {
       Toast.show({

@@ -3,7 +3,8 @@ import { Tabs } from 'expo-router'
 
 export default function Layout() {
   return (
-      <Tabs screenOptions={{
+    <Tabs
+      screenOptions={{
         tabBarActiveTintColor: '#546e7a',
         tabBarInactiveTintColor: '#AAB1B7',
         tabBarStyle: {
@@ -23,35 +24,40 @@ export default function Layout() {
           fontSize: 12,
           fontWeight: '600',
         },
-      }}>
-        <Tabs.Screen name="index"
+      }}
+    >
+      <Tabs.Screen
+        name="index"
         options={{
           title: '首页',
           headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
-        }}>
-        </Tabs.Screen>
-        <Tabs.Screen name="fav"
+        }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="fav"
         options={{
           title: '收藏',
           headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="heart" color={color} />,
-        }}>
-        </Tabs.Screen>
-        <Tabs.Screen name="recite"
+        }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="recite"
         options={{
           title: '背词',
           headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="book" color={color} />,
-        }}>
-        </Tabs.Screen>
-        <Tabs.Screen name="profile"
+        }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="profile"
         options={{
           title: '个人资料',
           headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,
-        }}>
-        </Tabs.Screen>
-      </Tabs>
+        }}
+      ></Tabs.Screen>
+    </Tabs>
   )
 }

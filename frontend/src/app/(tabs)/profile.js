@@ -169,10 +169,13 @@ export default function ProfileScreen() {
         </View>
         <View style={styles.right}>
           {token ? (
-            <TouchableOpacity style={styles.logoutButton} onPress={async () => {
-              await AsyncStorage.clear()
-              DevSettings.reload()
-            }}>
+            <TouchableOpacity
+              style={styles.logoutButton}
+              onPress={async () => {
+                await AsyncStorage.clear()
+                DevSettings.reload()
+              }}
+            >
               <Text style={styles.logoutButtonText}>退出登录</Text>
             </TouchableOpacity>
           ) : (
@@ -182,7 +185,11 @@ export default function ProfileScreen() {
           )}
         </View>
       </View>
-      <Dialog isVisible={visible} onBackdropPress={toggle} overlayStyle={{ backgroundColor: '#F5F5F5' }}>
+      <Dialog
+        isVisible={visible}
+        onBackdropPress={toggle}
+        overlayStyle={{ backgroundColor: '#F5F5F5' }}
+      >
         <Dialog.Title title="选择头像" titleStyle={styles.dialogTitle} />
         <ScrollView
           contentContainerStyle={{

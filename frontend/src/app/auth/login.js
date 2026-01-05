@@ -12,7 +12,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       await login(username, password).then((token) => {
-        if(token) router.replace('../(tabs)/profile')
+        if (token) router.replace('../(tabs)/profile')
       })
     } catch (err) {
       Toast.show({
@@ -46,7 +46,10 @@ export default function Login() {
           <Text style={styles.label}>登录</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.forgotPassword} onPress={() => router.replace('/auth/register')}>
+      <TouchableOpacity
+        style={styles.forgotPassword}
+        onPress={() => router.replace('/auth/register')}
+      >
         <Text style={styles.forgotPasswordText}>忘记密码？</Text>
       </TouchableOpacity>
     </View>
