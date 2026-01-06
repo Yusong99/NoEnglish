@@ -22,7 +22,6 @@ export default function ReciteScreen() {
         await AsyncStorage.setItem('wordsList', JSON.stringify(res2.data.data))
       }
       setDiclist(res.data)
-      console.log(JSON.stringify(res.data, null, 2))
     }
     fecth().then()
   }, [])

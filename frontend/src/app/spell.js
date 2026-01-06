@@ -1,25 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import { useStore } from '../store/spellStore.js'
-import api from '../utils/api.js'
-
-// 检查字符是否为平假名
-function isHiragana(char) {
-  const code = char.charCodeAt(0)
-  return code >= 0x3041 && code <= 0x3096
-}
-
-// 检查字符是否为片假名
-function isKatakana(char) {
-  const code = char.charCodeAt(0)
-  return code >= 0x30A1 && code <= 0x30FA
-}
-
-// 检查字符是否为英文字母
-function isLetter(char) {
-  return /^[a-zA-Z]$/.test(char)
-}
+import { useStore } from '../store/spellStore'
+import api from '../utils/api'
 
 export default function SpellScreen() {
   const { level } = useLocalSearchParams()
@@ -29,10 +12,14 @@ export default function SpellScreen() {
     userInput,
     setWords,
     initCurrentWord,
-    inputAtIndex,
     updateTempInput,
+    checkCurrentAnswer,
+    isSingleKana,
   } = useStore()
 
+  const inputRefs = useRef([])
+
+  // 拉取单词
   useEffect(() => {
     async function fetchWords() {
       const res = await api.get('/api/vocab/random', {
@@ -53,18 +40,41 @@ export default function SpellScreen() {
 
   const kanaChars = [...currentWord.kana]
 
-  const renderInput = ({ item, index }) => (
+  // ===== 输入处理（核心）=====
+  const handleChange = (text, index) => {
+    // 1️⃣ 已经转换成一个假名（罗马字 or 假名键盘）
+    if (isSingleKana(text)) {
+      updateTempInput(index, text)
+
+      // 自动跳到下一个
+      if (index < kanaChars.length - 1) {
+        inputRefs.current[index + 1]?.focus()
+      }
+
+      // 是否全部完成
+      const finished =
+        userInput.filter(Boolean).length + 1 === kanaChars.length
+
+      if (finished) {
+        checkCurrentAnswer()
+      }
+
+      return
+    }
+
+    // 2️⃣ 罗马字组合中（j / jy / jyo）
+    updateTempInput(index, text)
+  }
+
+  const renderInput = ({ index }) => (
     <TextInput
+      ref={(ref) => (inputRefs.current[index] = ref)}
       style={styles.input}
       value={userInput[index] || ''}
-      onChangeText={(text) => {
-        const filtered = text.split('').filter(char => isHiragana(char) || isKatakana(char) || isLetter(char)).join('')
-        updateTempInput(index, filtered)
-      }}
-      onSubmitEditing={() => inputAtIndex(index, userInput[index])}
-      maxLength={5}
+      onChangeText={(text) => handleChange(text, index)}
       autoCapitalize="none"
       autoCorrect={false}
+      textAlign="center"
     />
   )
 
@@ -72,14 +82,17 @@ export default function SpellScreen() {
     <View style={styles.container}>
       <Text style={styles.word}>{currentWord.word}</Text>
       <Text style={styles.meaning}>{currentWord.meaning}</Text>
+
       <FlatList
         data={kanaChars}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={renderInput}
         horizontal
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ justifyContent: 'center' }}
       />
-      <Text>
+
+      <Text style={styles.progress}>
         进度: {currentIndex + 1} / {wordsList.length}
       </Text>
     </View>
@@ -105,13 +118,16 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 60,
-    height: 40,
+    height: 44,
     borderWidth: 1,
     borderColor: '#D1D9E6',
-    borderRadius: 5,
-    textAlign: 'center',
-    fontSize: 18,
-    marginHorizontal: 5,
+    borderRadius: 8,
+    fontSize: 20,
+    marginHorizontal: 6,
     backgroundColor: '#F5F5F5',
+  },
+  progress: {
+    marginTop: 20,
+    textAlign: 'center',
   },
 })
