@@ -1,5 +1,17 @@
 import { create } from 'zustand'
 
+// 检查字符是否为平假名
+function isHiragana(char) {
+  const code = char.charCodeAt(0)
+  return code >= 0x3041 && code <= 0x3096
+}
+
+// 检查字符是否为片假名
+function isKatakana(char) {
+  const code = char.charCodeAt(0)
+  return code >= 0x30A1 && code <= 0x30FA
+}
+
 // 创建store
 export const useStore = create((set, get) => {
   return {
@@ -24,18 +36,23 @@ export const useStore = create((set, get) => {
     },
 
     // 输入一个字符
-    inputAtIndex: (index, char) => {
+    inputAtIndex: (index, text) => {
       const { wordsList, currentIndex, userInput } = get()
       const answerChars = [...wordsList[currentIndex].kana]
+      // 检查是否为单个假名字符
+      if (text.length !== 1 || (!isHiragana(text) && !isKatakana(text))) {
+        set({ userInput: Array(answerChars.length).fill('') })
+        return false
+      }
       // 错误
-      if (answerChars[index] !== char) {
+      if (text !== answerChars[index]) {
         set({ userInput: Array(answerChars.length).fill('') })
         return false
       }
 
       // 正确
       const newInput = [...userInput]
-      newInput[index] = char
+      newInput[index] = text
       set({ userInput: newInput })
 
       // 是否完成

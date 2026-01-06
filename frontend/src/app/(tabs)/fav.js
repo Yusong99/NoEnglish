@@ -36,8 +36,6 @@ export default function FavScreen() {
       .then((response) => {
         // freshWordsList(response.data.data)
         setWords(response.data.data)
-        console.log(wordsList[0].kana)
-        console.log(wordsList)
       })
   }
   const inputRefs = useRef([])
@@ -46,8 +44,6 @@ export default function FavScreen() {
     if (!text) return
 
     const char = text.slice(-1)
-    console.log('duan dian 1')
-    console.log('duan dian 2')
     const ok = handleConfirm(index, text)
 
     if (ok) {
@@ -63,27 +59,6 @@ export default function FavScreen() {
         containerStyle={{ width: 50 }}
         inputStyle={{ fontSize: 30, fontWeight: 'bold' }}
       ></Input>
-      <Input placeholder="BASIC INPUT"></Input>
-      <View style={styles.row}>
-        {answerChars.map((_, index) => (
-          <TextInput
-            ref={(ref) => (inputRefs.current[index] = ref)}
-            style={styles.input}
-            value={userInput[index] ?? ''}
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={(text) => {
-              // 只更新显示，不校验
-              updateTempInput(index, text)
-            }}
-            onEndEditing={(e) => {
-              const text = e.nativeEvent.text
-              handleConfirm(index, text)
-            }}
-          />
-        ))}
-      </View>
-      <Button title={'点击'} onPress={getWords}></Button>
     </>
   )
 }

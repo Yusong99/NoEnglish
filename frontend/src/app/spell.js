@@ -4,6 +4,23 @@ import { useLocalSearchParams } from 'expo-router'
 import { useStore } from '../store/spellStore.js'
 import api from '../utils/api.js'
 
+// 检查字符是否为平假名
+function isHiragana(char) {
+  const code = char.charCodeAt(0)
+  return code >= 0x3041 && code <= 0x3096
+}
+
+// 检查字符是否为片假名
+function isKatakana(char) {
+  const code = char.charCodeAt(0)
+  return code >= 0x30A1 && code <= 0x30FA
+}
+
+// 检查字符是否为英文字母
+function isLetter(char) {
+  return /^[a-zA-Z]$/.test(char)
+}
+
 export default function SpellScreen() {
   const { level } = useLocalSearchParams()
   const {
@@ -40,9 +57,12 @@ export default function SpellScreen() {
     <TextInput
       style={styles.input}
       value={userInput[index] || ''}
-      onChangeText={(text) => updateTempInput(index, text)}
+      onChangeText={(text) => {
+        const filtered = text.split('').filter(char => isHiragana(char) || isKatakana(char) || isLetter(char)).join('')
+        updateTempInput(index, filtered)
+      }}
       onSubmitEditing={() => inputAtIndex(index, userInput[index])}
-      maxLength={1}
+      maxLength={5}
       autoCapitalize="none"
       autoCorrect={false}
     />
@@ -84,7 +104,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: 40,
+    width: 60,
     height: 40,
     borderWidth: 1,
     borderColor: '#D1D9E6',

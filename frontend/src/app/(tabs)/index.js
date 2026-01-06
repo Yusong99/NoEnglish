@@ -45,7 +45,6 @@ export default function App() {
       })
 
       const data = await res.data
-      console.log(data)
 
       setList((prev) => (reset ? data.list : [...prev, ...data.list]))
       setPage(nextPage + 1)
