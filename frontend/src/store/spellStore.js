@@ -32,7 +32,7 @@ export const useStore = create((set, get) => ({
     set({ userInput: Array(kanaList.length).fill('') })
   },
 
-  // 输入中（不校验，允许罗马字）
+  // 输入中（不校验，允许罗马字输入法的日语出现）
   updateTempInput: (index, text) => {
     const { userInput } = get()
     const next = [...userInput]
@@ -63,6 +63,5 @@ export const useStore = create((set, get) => ({
     return isCorrect
   },
 
-  // 暴露给 UI 的工具
   isSingleKana,
 }))

@@ -9,7 +9,7 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: '#E9ECEF' }, // 确保 Stack 容器也是灰底
+          contentStyle: { backgroundColor: '#E9ECEF' },
         }}
       >
         <Stack.Screen name="(tabs)" />
