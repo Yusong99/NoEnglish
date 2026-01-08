@@ -1,15 +1,14 @@
+// 首页-个人界面
 import {
   View,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  Image,
   Text,
   ScrollView,
   DevSettings,
 } from 'react-native'
 import { router } from 'expo-router'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import api from '../../utils/api'

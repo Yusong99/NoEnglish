@@ -1,5 +1,6 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+// 首页-搜索界面
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import api from '../../utils/api'
 import { Input, Button, Icon } from '@rneui/themed'

@@ -3,12 +3,9 @@ package org.noenglish.backend.controller;
 import org.noenglish.backend.common.ApiResponse;
 import org.noenglish.backend.dto.LoginResponse;
 import org.noenglish.backend.entity.User;
-import org.noenglish.backend.security.JwtUtil;
 import org.noenglish.backend.service.AuthService;
 import org.noenglish.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

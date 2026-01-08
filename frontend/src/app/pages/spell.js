@@ -1,8 +1,10 @@
+// 背单词页面
 import React, { useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import { useStore } from '../store/spellStore'
-import api from '../utils/api'
+import { useStore } from '../../store/spellStore'
+import api from '../../utils/api'
+import { splitKanaAdvanced, isCompleteKana } from '../../utils/kana'
 
 export default function SpellScreen() {
   const { level } = useLocalSearchParams()
@@ -14,12 +16,11 @@ export default function SpellScreen() {
     initCurrentWord,
     updateTempInput,
     checkCurrentAnswer,
-    isSingleKana,
   } = useStore()
 
   const inputRefs = useRef([])
 
-  // 拉取单词
+  // 获取单词
   useEffect(() => {
     async function fetchWords() {
       const res = await api.get('/api/vocab/random', {
@@ -38,32 +39,32 @@ export default function SpellScreen() {
     return <Text>加载中...</Text>
   }
 
-  const kanaChars = [...currentWord.kana]
+  const kanaUnits = splitKanaAdvanced(currentWord.kana)
 
   // ===== 输入处理（核心）=====
   const handleChange = (text, index) => {
-    // 1️⃣ 已经转换成一个假名（罗马字 or 假名键盘）
-    if (isSingleKana(text)) {
-      updateTempInput(index, text)
+    // 基于“即将写入”的状态计算
+    const nextInput = [...userInput]
+    nextInput[index] = text
 
-      // 自动跳到下一个
-      if (index < kanaChars.length - 1) {
+    updateTempInput(index, text)
+
+    // ① 只有“完整音拍”才允许跳格
+    if (isCompleteKana(text)) {
+      if (index < kanaUnits.length - 1) {
         inputRefs.current[index + 1]?.focus()
       }
-
-      // 是否全部完成
-      const finished =
-        userInput.filter(Boolean).length + 1 === kanaChars.length
-
-      if (finished) {
-        checkCurrentAnswer()
-      }
-
-      return
     }
 
-    // 2️⃣ 罗马字组合中（j / jy / jyo）
-    updateTempInput(index, text)
+    // ② finished 判断：每一格都是完整音拍
+    const finished = nextInput.every((v) => isCompleteKana(v))
+
+    console.log('finished :', finished)
+    console.log('userInput', nextInput.join(','))
+
+    if (finished) {
+      checkCurrentAnswer()
+    }
   }
 
   const renderInput = ({ index }) => (
@@ -84,7 +85,7 @@ export default function SpellScreen() {
       <Text style={styles.meaning}>{currentWord.meaning}</Text>
 
       <FlatList
-        data={kanaChars}
+        data={kanaUnits}
         keyExtractor={(_, index) => index.toString()}
         renderItem={renderInput}
         horizontal
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: 60,
+    width: 64,
     height: 44,
     borderWidth: 1,
     borderColor: '#D1D9E6',

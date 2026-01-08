@@ -1,4 +1,5 @@
-import { StyleSheet, Button, View, TextInput } from 'react-native'
+// 首页-收藏界面
+import { StyleSheet } from 'react-native'
 import { Input } from '@rneui/themed'
 import { useStore } from '../../store/spellStore'
 import { useEffect, useState } from 'react'

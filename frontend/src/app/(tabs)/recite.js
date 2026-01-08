@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+// 首页-背词界面
+import { useEffect, useState } from 'react'
 import { Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import { router } from 'expo-router'
 import api from '../../utils/api.js'
@@ -8,11 +9,13 @@ export default function ReciteScreen() {
   const [dicList, setDiclist] = useState([])
   useEffect(() => {
     async function fecth() {
+      // 拉取辞书列表
       const res = await api.get('/api/dictionaries', {
         params: {
           lang: 'ja',
         },
       })
+      // 缓存N2辞书单词列表到本地存储
       const res2 = await api.get('/api/vocab/random', {
         params: {
           level: 'N2',
@@ -32,7 +35,7 @@ export default function ReciteScreen() {
       onPress={() => {
         // 点击后跳转到背诵页面，并传递所选辞书的级别参数
         router.push({
-          pathname: '/spell',
+          pathname: '/pages/spell',
           params: { level: item.level },
         })
       }}
