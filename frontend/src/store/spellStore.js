@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { splitKanaAdvanced } from '../utils/kana'
+import Toast from 'react-native-toast-message'
 
 export const useStore = create((set, get) => ({
   // ===== 状态 =====
@@ -18,7 +19,8 @@ export const useStore = create((set, get) => ({
   initCurrentWord: () => {
     const { wordsList, currentIndex } = get()
     if (!wordsList[currentIndex]) return
-
+    console.log('currtnt'+wordsList[currentIndex].kana);
+    
     const kanaList = splitKanaAdvanced(wordsList[currentIndex].kana)
     set({ userInput: Array(kanaList.length).fill('') })
   },
@@ -45,9 +47,17 @@ export const useStore = create((set, get) => ({
         currentIndex: currentIndex + 1,
         userInput: [],
       })
+      Toast.show({
+        type: 'success',
+        text1: '回答正确！',
+      })
     } else {
       set({
         userInput: Array(answer.length).fill(''),
+      })
+      Toast.show({
+        type: 'error',
+        text1: '回答错误，请再试一次！',
       })
     }
 
